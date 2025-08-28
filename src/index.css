@@ -1,0 +1,127 @@
+/* PLEASE NOTE: THESE TAILWIND IMPORTS SHOULD NEVER BE DELETED */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+/* DO NOT DELETE THESE TAILWIND IMPORTS, OTHERWISE THE STYLING WILL NOT RENDER AT ALL */
+/* Mobile safe area utilities */
+.h-safe-area-top {
+  height: env(safe-area-inset-top, 0);
+}
+.h-safe-area-bottom {
+  height: env(safe-area-inset-bottom, 0);
+}
+.pb-safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 1rem);
+}
+/* Add mobile-specific touch feedback */
+@layer components {
+  .active-state {
+    @apply transition-opacity duration-150;
+  }
+  .active-state:active {
+    @apply opacity-70;
+  }
+  /* Touch-specific button styles */
+  button {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  button:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+}
+/* Add momentum scrolling for iOS */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+/* Prevent text size adjustment on orientation change */
+html {
+  -webkit-text-size-adjust: 100%;
+}
+/* Improve tap targets for mobile */
+button, a, input, select, textarea {
+  touch-action: manipulation;
+}
+/* Mobile animations */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes slide-in-left {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out forwards;
+}
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s ease-out forwards;
+}
+.animate-slide-in-left {
+  animation: slide-in-left 0.3s ease-out forwards;
+}
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+/* Prevent blue highlight on mobile taps */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+/* Mobile-friendly scrollbar */
+::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+/* Overscroll behavior for native-like bounce */
+html, body {
+  overscroll-behavior-y: contain;
+}
+/* Pulse animation for hints */
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0.5;
+  }
+}
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
