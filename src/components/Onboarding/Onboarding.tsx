@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { WelcomeScreen } from './WelcomeScreen';
-import { PhilosophyScreen } from './PhilosophyScreen';
 import { IncomeSetupScreen } from './IncomeSetupScreen';
-import { CategoryPreviewScreen } from './CategoryPreviewScreen';
-import { FirstCategoryScreen } from './FirstCategoryScreen';
-import { ReadyScreen } from './ReadyScreen';
 type OnboardingProps = {
   completeOnboarding: (income?: number) => void;
   initialIncome: number;
@@ -17,7 +13,7 @@ export const Onboarding = ({
 }: OnboardingProps) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [income, setIncome] = useState<number>(initialIncome);
-  const totalSteps = 6;
+  const totalSteps = 3;
   const goToNext = () => {
     if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
@@ -36,21 +32,15 @@ export const Onboarding = ({
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 1:
-        return <WelcomeScreen onNext={goToNext} onSkip={skipOnboarding} userName={userName} />;
-      case 2:
-        return <PhilosophyScreen onNext={goToNext} onBack={goToPrevious} onSkip={skipOnboarding} />;
-      case 3:
-        return <IncomeSetupScreen onNext={goToNext} onBack={goToPrevious} onSkip={skipOnboarding} income={income} setIncome={setIncome} />;
-      case 4:
-        return <CategoryPreviewScreen onNext={goToNext} onBack={goToPrevious} onSkip={skipOnboarding} />;
-      case 5:
-        return <FirstCategoryScreen onNext={goToNext} onBack={goToPrevious} onSkip={skipOnboarding} />;
-      case 6:
-        return <ReadyScreen onComplete={() => completeOnboarding(income)} onBack={goToPrevious} />;
-      default:
-        return <WelcomeScreen onNext={goToNext} onSkip={skipOnboarding} userName={userName} />;
-    }
-  };
+      return <WelcomeScreen onNext={goToNext} onSkip={skipOnboarding} />;
+    case 2:
+      return <IncomeSetupScreen onNext={goToNext} onBack={goToPrevious} onSkip={skipOnboarding} income={income} setIncome={setIncome} />;
+    case 3:
+      return <BudgetSnapshot onComplete={() => completeOnboarding(income)} onBack={goToPrevious} />;
+    default:
+      return <WelcomeScreen onNext={goToNext} onSkip={skipOnboarding} />;
+  }
+};
   return <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center justify-center">
       <div className="w-full max-w-md mx-auto p-4">
         {renderCurrentStep()}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { BudgetApp } from './components/BudgetApp';
 import { Onboarding } from './components/Onboarding/Onboarding';
 import { SignupForm } from './components/Auth/SignupForm';
