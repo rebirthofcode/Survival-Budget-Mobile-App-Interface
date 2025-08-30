@@ -232,7 +232,7 @@ const AppContent = () => {
         {notificationsOverlay}
         {menuDrawer}
         {/* App install banner */}
-        {showInstallBanner && <AppInstallBanner onDismiss={dismissInstallBanner} />}
+        {/*showInstallBanner && <AppInstallBanner onDismiss={dismissInstallBanner} />*/}
         {/* Offline indicator */}
         <OfflineIndicator />
       </div>
