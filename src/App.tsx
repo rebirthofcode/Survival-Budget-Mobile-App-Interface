@@ -11,7 +11,6 @@ import { MobileHeader } from './components/Mobile/MobileHeader';
 import { NotificationSheet } from './components/Mobile/NotificationSheet';
 import { PullToRefresh } from './components/Mobile/PullToRefresh';
 import { MobileDrawer } from './components/Mobile/MobileDrawer';
-import { AppInstallBanner } from './components/Mobile/AppInstallBanner';
 import { OfflineIndicator } from './components/Mobile/OfflineIndicator';
 import { HapticFeedback, useHapticFeedback } from './components/Mobile/HapticFeedback';
 const AppContent = () => {
@@ -26,7 +25,7 @@ const AppContent = () => {
   const [currentScreen, setCurrentScreen] = useState<'signup' | 'registrationSuccess' | 'dashboard' | 'onboarding' | 'budget' | 'profile' | 'savings'>('signup');
   const [showNotifications, setShowNotifications] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [showInstallBanner, setShowInstallBanner] = useState(false);
+
   const [previousScreen, setPreviousScreen] = useState<string | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const haptic = useHapticFeedback();
@@ -43,6 +42,7 @@ const AppContent = () => {
     } else {
       setCurrentScreen('signup');
     }
+    /*
     // Show install banner after 3 seconds if user is authenticated
     if (isAuthenticated && !localStorage.getItem('installBannerDismissed')) {
       const timer = setTimeout(() => {
@@ -50,6 +50,7 @@ const AppContent = () => {
       }, 3000);
       return () => clearTimeout(timer);
     }
+      */
   }, [isAuthenticated]);
   const completeOnboarding = (userIncome?: number) => {
     localStorage.setItem('onboardingCompleted', 'true');
@@ -106,11 +107,13 @@ const AppContent = () => {
       }, 300);
     }, 50);
   };
+  /*
   const dismissInstallBanner = () => {
     haptic.trigger('light');
     setShowInstallBanner(false);
     localStorage.setItem('installBannerDismissed', 'true');
   };
+  */
   // Determine what to show
   if (!isAuthenticated) {
     return <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center justify-center">
