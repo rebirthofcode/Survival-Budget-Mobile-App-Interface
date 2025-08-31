@@ -1,4 +1,11 @@
-import React, { useEffect, useState } from 'react';
+export const AppInstallBanner = ({
+  onDismiss
+}: AppInstallBannerProps) => {
+  return null; // Temporarily disable banner entirely
+  
+  const [isIOS, setIsIOS] = useState(false);
+  // ... rest of component
+import { useEffect, useState } from 'react';
 import { XIcon, DownloadIcon, SmartphoneIcon } from 'lucide-react';
 type AppInstallBannerProps = {
   onDismiss: () => void;
