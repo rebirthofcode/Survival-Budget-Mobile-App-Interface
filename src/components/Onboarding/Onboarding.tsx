@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { WelcomeScreen } from './WelcomeScreen';
 import { IncomeSetupScreen } from './IncomeSetupScreen';
+import { BudgetSnapshot } from './BudgetSnapshot';
 type OnboardingProps = {
   completeOnboarding: (income?: number) => void;
   initialIncome: number;
@@ -9,7 +10,6 @@ type OnboardingProps = {
 export const Onboarding = ({
   completeOnboarding,
   initialIncome,
-  userName
 }: OnboardingProps) => {
   const [currentStep, setCurrentStep] = useState(1);
   const [income, setIncome] = useState<number>(initialIncome);
@@ -32,7 +32,7 @@ export const Onboarding = ({
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 1:
-      return <WelcomeScreen onNext={goToNext} onSkip={skipOnboarding} />;
+  return <WelcomeScreen onNext={goToNext} onSkip={skipOnboarding} />;
     case 2:
       return <IncomeSetupScreen onNext={goToNext} onBack={goToPrevious} onSkip={skipOnboarding} income={income} setIncome={setIncome} />;
     case 3:
