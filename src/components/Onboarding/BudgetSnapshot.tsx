@@ -1,24 +1,28 @@
-import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, Home, ShoppingBag, Zap } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Home, ShoppingBag, Zap } from 'lucide-react';
 import { Logo } from '../Logo/Logo';
 
 type BudgetSnapshotProps = {
   onComplete: () => void;
   onBack: () => void;
-  income?: number;
+  income: number;
+  expenses: {
+    rent: number;
+    groceries: number;
+    utilities: number;
+  };
 };
 
 export const BudgetSnapshot = ({
   onComplete,
   onBack,
-  income = 2000
+  income,
+  expenses
 }: BudgetSnapshotProps) => {
-  // Calculate budget values
-  const rent = 800;
-  const groceries = 300;
-  const utilities = 150;
+  // Use the actual expense values from props
+  const { rent, groceries, utilities } = expenses;
   const totalEssentials = rent + groceries + utilities;
   const remaining = income - totalEssentials;
-  const essentialsPercentage = Math.round((totalEssentials / income) * 100);
+  const essentialsPercentage = income > 0 ? Math.round((totalEssentials / income) * 100) : 0;
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
@@ -44,7 +48,7 @@ export const BudgetSnapshot = ({
       <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
         <div className="flex items-start">
           <div className="flex-shrink-0">
-            <CheckIcon className="h-5 w-5 text-green-600 mt-0.5" />
+            <Check className="h-5 w-5 text-green-600 mt-0.5" />
           </div>
           <div className="ml-3">
             <h3 className="text-sm font-medium text-green-800">
@@ -137,7 +141,7 @@ export const BudgetSnapshot = ({
           onClick={onBack}
           className="flex-1 py-3 px-4 border border-gray-300 text-gray-700 rounded-md font-medium hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 flex items-center justify-center"
         >
-          <ArrowLeftIcon className="mr-2 h-4 w-4" />
+          <ArrowLeft className="mr-2 h-4 w-4" />
           Back
         </button>
         
@@ -146,7 +150,7 @@ export const BudgetSnapshot = ({
           className="flex-1 py-3 px-4 bg-orange-500 text-white rounded-md font-medium shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 flex items-center justify-center"
         >
           Go to Dashboard
-          <ArrowRightIcon className="ml-2 h-4 w-4" />
+          <ArrowRight className="ml-2 h-4 w-4" />
         </button>
       </div>
 
