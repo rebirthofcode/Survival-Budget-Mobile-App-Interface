@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Favicons for Survival Budget</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .canvas-container {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        canvas {
+            border: 1px solid #ddd;
+            margin: 10px;
+            background: white;
+        }
+        button {
+            background: #FF6B35;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #ff5520;
+        }
+        .instructions {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        h1 { color: #FF6B35; }
+        h3 { color: #666; }
+    </style>
+</head>
+<body>
+    <h1>Survival Budget - Favicon Generator</h1>
+
+    <div class="instructions">
+        <h3>Instructions:</h3>
+        <ol>
+            <li>Open this file in your browser</li>
+            <li>Click each "Download" button below to save the respective favicon file</li>
+            <li>Move all downloaded files to the <code>public/</code> folder in your project</li>
+            <li>The index.html will be automatically updated with the correct links</li>
+        </ol>
+    </div>
+
+    <div class="canvas-container">
+        <h3>16x16 Favicon (favicon-16.png)</h3>
+        <canvas id="canvas16" width="16" height="16"></canvas>
+        <br>
+        <button onclick="downloadCanvas('canvas16', 'favicon-16.png')">Download 16x16</button>
+    </div>
+
+    <div class="canvas-container">
+        <h3>32x32 Favicon (favicon-32.png)</h3>
+        <canvas id="canvas32" width="32" height="32"></canvas>
+        <br>
+        <button onclick="downloadCanvas('canvas32', 'favicon-32.png')">Download 32x32</button>
+    </div>
+
+    <div class="canvas-container">
+        <h3>180x180 Apple Touch Icon (apple-touch-icon.png)</h3>
+        <canvas id="canvas180" width="180" height="180"></canvas>
+        <br>
+        <button onclick="downloadCanvas('canvas180', 'apple-touch-icon.png')">Download 180x180</button>
+    </div>
+
+    <div class="canvas-container">
+        <h3>512x512 PWA Icon (icon-512.png)</h3>
+        <canvas id="canvas512" width="512" height="512"></canvas>
+        <br>
+        <button onclick="downloadCanvas('canvas512', 'icon-512.png')">Download 512x512</button>
+    </div>
+
+    <script>
+        // Draw the Survival Budget logo on canvas at different sizes
+        function drawLogo(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            const scale = size / 40; // Original SVG is 40x40
+
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+
+            // Scale everything
+            ctx.scale(scale, scale);
+
+            // Draw background
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, 40, 40);
+
+            // Draw rounded rectangle border
+            ctx.strokeStyle = '#FF6B35';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.roundRect(2, 2, 36, 36, 8);
+            ctx.stroke();
+
+            // Draw dollar sign
+            ctx.fillStyle = '#FF6B35';
+            ctx.font = 'bold 12px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('$', 20, 14);
+
+            // Draw three lines (budget tiers)
+            ctx.fillStyle = '#FF6B35';
+
+            // First line (shortest)
+            ctx.beginPath();
+            ctx.roundRect(14, 22, 12, 2, 1);
+            ctx.fill();
+
+            // Second line (medium)
+            ctx.beginPath();
+            ctx.roundRect(12, 26, 16, 2, 1);
+            ctx.fill();
+
+            // Third line (longest)
+            ctx.beginPath();
+            ctx.roundRect(10, 30, 20, 2, 1);
+            ctx.fill();
+        }
+
+        // Download canvas as PNG
+        function downloadCanvas(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Generate all favicons on page load
+        window.onload = function() {
+            drawLogo(document.getElementById('canvas16'), 16);
+            drawLogo(document.getElementById('canvas32'), 32);
+            drawLogo(document.getElementById('canvas180'), 180);
+            drawLogo(document.getElementById('canvas512'), 512);
+        };
+    </script>
+</body>
+</html>

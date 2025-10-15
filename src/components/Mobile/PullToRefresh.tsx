@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { RefreshCwIcon } from 'lucide-react';
 type PullToRefreshProps = {
   onRefresh: () => Promise<void>;
@@ -42,7 +42,9 @@ export const PullToRefresh = ({
       try {
         await onRefresh();
       } catch (error) {
-        console.error('Refresh failed:', error);
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Refresh failed:', error);
+        }
       }
       setTimeout(() => {
         if (contentRef.current) {

@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
 import { IncomeInput } from './IncomeInput';
-import { PriorityCard } from './PriorityCard';
 import { SpendingPlan } from './SpendingPlan';
-import { SettingsIcon, HomeIcon, CarIcon, CoffeeIcon, PiggyBankIcon, LogOutIcon, PlusCircleIcon } from 'lucide-react';
-import { useAuth } from './Auth/AuthContext';
-import { Logo } from './Logo/Logo';
+import { HomeIcon, CarIcon, CoffeeIcon, PiggyBankIcon, PlusCircleIcon, ChevronDownIcon, ChevronUpIcon, CheckCircleIcon, XCircleIcon, AlertTriangleIcon } from 'lucide-react';
 import { BottomSheet } from './Mobile/BottomSheet';
 import { BudgetExpenseList } from './Mobile/BudgetExpenseList';
 
@@ -27,8 +24,6 @@ type Priority = {
 
 type BudgetAppProps = {
   initialIncome: number;
-  resetOnboarding: () => void;
-  userName?: string;
 };
 
 // Default priorities data (used as fallback)
@@ -164,13 +159,11 @@ const defaultPriorities: Priority[] = [
 ];
 
 export const BudgetApp = ({
-  initialIncome,
-  resetOnboarding,
-  userName
+  initialIncome
 }: BudgetAppProps) => {
-  const { logout } = useAuth();
   const [income, setIncome] = useState<number>(initialIncome);
   const [priorities, setPriorities] = useState<Priority[]>(defaultPriorities);
+  const [expandedPriorities, setExpandedPriorities] = useState<number[]>([]);
   const [showExpenseSheet, setShowExpenseSheet] = useState(false);
   const [selectedPriorityId, setSelectedPriorityId] = useState<number | null>(null);
   const [isAddingExpense, setIsAddingExpense] = useState(false);
@@ -185,8 +178,9 @@ export const BudgetApp = ({
         const parsedPriorities = JSON.parse(savedPriorities);
         setPriorities(parsedPriorities);
       } catch (error) {
-        console.error('Error loading saved priorities:', error);
-        // If there's an error parsing, keep the default priorities
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Error loading saved priorities:', error);
+        }
       }
     }
   }, []);
@@ -206,7 +200,9 @@ export const BudgetApp = ({
           setIncome(parsedIncome);
         }
       } catch (error) {
-        console.error('Error loading saved income:', error);
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Error loading saved income:', error);
+        }
       }
     }
   }, []);
@@ -226,7 +222,6 @@ export const BudgetApp = ({
         .filter(expense => expense.enabled)
         .reduce((sum, expense) => sum + expense.amount, 0);
       
-      // Check if this priority is affordable
       if (remainingIncome >= priorityTotal) {
         priority.isAffordable = true;
         priority.isBorderline = false;
@@ -323,11 +318,19 @@ export const BudgetApp = ({
         return priority;
       }));
 
-      // Reset form
       setNewExpenseName('');
       setNewExpenseAmount('');
       setIsAddingExpense(false);
     }
+  };
+
+  // Toggle priority card expansion
+  const togglePriority = (priorityId: number) => {
+    setExpandedPriorities(prev => 
+      prev.includes(priorityId) 
+        ? prev.filter(id => id !== priorityId)
+        : [...prev, priorityId]
+    );
   };
 
   // Get affordable priority count
@@ -350,75 +353,109 @@ export const BudgetApp = ({
   // Get selected priority
   const selectedPriority = selectedPriorityId ? priorities.find(p => p.id === selectedPriorityId) : null;
 
+  // Get priority icon
+  const getPriorityIcon = (priorityId: number) => {
+    switch (priorityId) {
+      case 1: return <HomeIcon className="h-5 w-5 text-blue-600" />;
+      case 2: return <CarIcon className="h-5 w-5 text-orange-600" />;
+      case 3: return <CoffeeIcon className="h-5 w-5 text-pink-600" />;
+      case 4: return <PiggyBankIcon className="h-5 w-5 text-green-600" />;
+      default: return <HomeIcon className="h-5 w-5 text-blue-600" />;
+    }
+  };
+
+  const getIconBackground = (priorityId: number) => {
+    switch (priorityId) {
+      case 1: return 'bg-blue-100';
+      case 2: return 'bg-orange-100';
+      case 3: return 'bg-pink-100';
+      case 4: return 'bg-green-100';
+      default: return 'bg-blue-100';
+    }
+  };
+
   return (
     <div className="w-full max-w-md mx-auto px-4 py-6 flex flex-col gap-4">
       <IncomeInput income={income} setIncome={setIncome} />
-      
-      {/* Category Icons Grid */}
-      <div className="grid grid-cols-4 gap-3 mb-2">
-        <div className="flex flex-col items-center">
-          <div 
-            className={`w-14 h-14 rounded-full flex items-center justify-center mb-1 ${
-              priorities[0].isAffordable ? 'bg-blue-100' : 'bg-gray-100'
-            }`} 
-            onClick={() => openExpenseSheet(1)}
-          >
-            <HomeIcon className={`h-7 w-7 ${priorities[0].isAffordable ? 'text-blue-600' : 'text-gray-400'}`} />
-          </div>
-          <span className="text-xs font-medium text-gray-700">Survival</span>
-        </div>
-        <div className="flex flex-col items-center">
-          <div 
-            className={`w-14 h-14 rounded-full flex items-center justify-center mb-1 ${
-              priorities[1].isAffordable ? 'bg-orange-100' : 'bg-gray-100'
-            }`} 
-            onClick={() => openExpenseSheet(2)}
-          >
-            <CarIcon className={`h-7 w-7 ${priorities[1].isAffordable ? 'text-orange-600' : 'text-gray-400'}`} />
-          </div>
-          <span className="text-xs font-medium text-gray-700">Important</span>
-        </div>
-        <div className="flex flex-col items-center">
-          <div 
-            className={`w-14 h-14 rounded-full flex items-center justify-center mb-1 ${
-              priorities[2].isAffordable || priorities[2].isBorderline ? 'bg-pink-100' : 'bg-gray-100'
-            }`} 
-            onClick={() => openExpenseSheet(3)}
-          >
-            <CoffeeIcon className={`h-7 w-7 ${
-              priorities[2].isAffordable || priorities[2].isBorderline ? 'text-pink-600' : 'text-gray-400'
-            }`} />
-          </div>
-          <span className="text-xs font-medium text-gray-700">Quality</span>
-        </div>
-        <div className="flex flex-col items-center">
-          <div 
-            className={`w-14 h-14 rounded-full flex items-center justify-center mb-1 ${
-              priorities[3].isAffordable ? 'bg-green-100' : 'bg-gray-100'
-            }`} 
-            onClick={() => openExpenseSheet(4)}
-          >
-            <PiggyBankIcon className={`h-7 w-7 ${priorities[3].isAffordable ? 'text-green-600' : 'text-gray-400'}`} />
-          </div>
-          <span className="text-xs font-medium text-gray-700">Future</span>
-        </div>
-      </div>
 
-      <div className="space-y-4">
-        {priorities.map(priority => (
-          <PriorityCard
-            key={priority.id}
-            priority={priority}
-            toggleExpense={toggleExpense}
-            updateExpenseAmount={updateExpenseAmount}
-            onViewDetails={() => openExpenseSheet(priority.id)}
-          />
-        ))}
+      {/* Priority Cards */}
+      <div className="space-y-3">
+        {priorities.map((priority) => {
+          const isExpanded = expandedPriorities.includes(priority.id);
+          const totalAmount = priority.expenses.filter(e => e.enabled).reduce((sum, e) => sum + e.amount, 0);
+          const borderColor = priority.isAffordable ? 'border-green-500' : priority.isBorderline ? 'border-orange-500' : 'border-red-500';
+
+          return (
+            <div key={priority.id} className={`bg-white rounded-lg shadow-sm border-l-4 ${borderColor} overflow-hidden`}>
+              {/* Card Header */}
+              <button
+                onClick={() => togglePriority(priority.id)}
+                className="w-full p-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+              >
+                <div className="flex items-center">
+                  <div className={`${getIconBackground(priority.id)} rounded-full p-2 mr-3`}>
+                    {getPriorityIcon(priority.id)}
+                  </div>
+                  <div className="text-left">
+                    <h3 className="font-medium text-gray-900">
+                      {priority.id}. {priority.name}
+                    </h3>
+                    <p className="text-xs text-gray-500 flex items-center">
+                      {priority.isAffordable && <CheckCircleIcon className="h-3 w-3 text-green-600 mr-1" />}
+                      {priority.isBorderline && <AlertTriangleIcon className="h-3 w-3 text-orange-600 mr-1" />}
+                      {!priority.isAffordable && !priority.isBorderline && <XCircleIcon className="h-3 w-3 text-red-600 mr-1" />}
+                      {priority.isAffordable ? 'Affordable' : priority.isBorderline ? 'Borderline' : 'Not Affordable'}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center">
+                  <div className="text-right mr-3">
+                    <p className="font-medium text-gray-900">${totalAmount.toLocaleString()}</p>
+                    <p className="text-xs text-gray-500">total</p>
+                  </div>
+                  {isExpanded ? <ChevronUpIcon className="h-5 w-5 text-gray-400" /> : <ChevronDownIcon className="h-5 w-5 text-gray-400" />}
+                </div>
+              </button>
+
+              {/* Expanded Content */}
+              {isExpanded && (
+                <div className="border-t border-gray-200 p-4">
+                  <div className="space-y-2 mb-3">
+                    {priority.expenses.slice(0, 3).map((expense) => (
+                      <div key={expense.id} className="flex items-center justify-between py-2">
+                        <span className={`text-sm ${expense.enabled ? 'text-gray-900' : 'text-gray-400'}`}>
+                          {expense.name}
+                        </span>
+                        <span className={`text-sm font-medium ${expense.enabled ? 'text-gray-900' : 'text-gray-400'}`}>
+                          ${expense.amount.toLocaleString()}
+                        </span>
+                      </div>
+                    ))}
+                    {priority.expenses.length > 3 && (
+                      <p className="text-sm text-gray-500">
+                        +{priority.expenses.length - 3} more expenses
+                      </p>
+                    )}
+                  </div>
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      openExpenseSheet(priority.id);
+                    }}
+                    className="w-full py-2 px-4 border border-orange-600 text-orange-600 rounded-md text-sm font-medium hover:bg-orange-50"
+                  >
+                    Manage Expenses
+                  </button>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       <SpendingPlan priorityCount={getAffordablePriorityCount()} />
 
-      {/* Bottom sheet for expense details */}
+      {/* Bottom sheet for full expense management */}
       {showExpenseSheet && selectedPriority && (
         <BottomSheet
           isOpen={showExpenseSheet}
@@ -496,10 +533,7 @@ export const BudgetApp = ({
                         ? 'bg-orange-100'
                         : 'bg-red-100'
                     }`}>
-                      {selectedPriority.id === 1 && <HomeIcon className="h-5 w-5 text-blue-600" />}
-                      {selectedPriority.id === 2 && <CarIcon className="h-5 w-5 text-orange-600" />}
-                      {selectedPriority.id === 3 && <CoffeeIcon className="h-5 w-5 text-pink-600" />}
-                      {selectedPriority.id === 4 && <PiggyBankIcon className="h-5 w-5 text-green-600" />}
+                      {getPriorityIcon(selectedPriority.id)}
                     </div>
                     <div>
                       <h3 className="font-medium text-gray-900">
