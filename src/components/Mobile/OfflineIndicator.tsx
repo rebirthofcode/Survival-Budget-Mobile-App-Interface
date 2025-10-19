@@ -25,7 +25,7 @@ export const OfflineIndicator = () => {
     };
   }, []);
   if (!isVisible) return null;
-  return <div className={`fixed top-0 left-0 right-0 z-50 p-2 text-center text-sm font-medium transition-all duration-300 transform ${isVisible ? 'translate-y-0' : '-translate-y-full'} ${isOffline ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`} style={{
+  return <div className={`fixed top-0 left-0 right-0 z-50 p-2 text-center text-sm font-medium transition-all duration-300 transform ${isVisible ? 'translate-y-0' : '-translate-y-full'} ${isOffline ? 'bg-orange-500 text-white' : 'bg-green-500 text-white'}`} style={{
     paddingTop: 'calc(env(safe-area-inset-top) + 0.5rem)'
   }}>
       {isOffline ? <div className="flex items-center justify-center">

@@ -10,7 +10,7 @@ export const OnboardingComplete = ({ onContinue }: OnboardingCompleteProps) => {
     <div className="w-full max-w-md mx-auto p-4">
       <div className="bg-white rounded-lg shadow-md p-6 sm:p-8 border border-gray-200">
         <div className="mb-6">
-          <Logo variant="default" size="md" withText={true} />
+          <Logo variant="default" size="md" withText={true} tagline={true} />
         </div>
 
         {/* Success Icon */}

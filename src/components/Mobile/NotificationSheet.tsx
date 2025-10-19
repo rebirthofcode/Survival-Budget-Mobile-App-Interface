@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { XIcon, BellIcon, BellOffIcon } from 'lucide-react';
 type Notification = {
   id: string;
@@ -34,6 +34,10 @@ export const NotificationSheet = ({
     time: '3 days ago',
     read: true
   }]);
+
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const markAllButtonRef = useRef<HTMLButtonElement>(null);
+
   const markAllAsRead = () => {
     setNotifications(notifications.map(notification => ({
       ...notification,
@@ -43,6 +47,7 @@ export const NotificationSheet = ({
   const deleteNotification = (id: string) => {
     setNotifications(notifications.filter(notification => notification.id !== id));
   };
+
   // Prevent body scrolling when sheet is open
   useEffect(() => {
     if (isOpen) {
@@ -54,19 +59,80 @@ export const NotificationSheet = ({
       document.body.style.overflow = '';
     };
   }, [isOpen]);
+
+  // Focus management and keyboard trap
+  useEffect(() => {
+    if (!isOpen) return;
+
+    // Focus first interactive element when opened
+    const focusFirstElement = () => {
+      markAllButtonRef.current?.focus();
+    };
+
+    // Small delay to ensure DOM is ready
+    const timeoutId = setTimeout(focusFirstElement, 100);
+
+    // Handle escape key
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+        return;
+      }
+
+      // Trap focus within sheet
+      if (e.key === 'Tab' && sheetRef.current) {
+        const focusableElements = sheetRef.current.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey && document.activeElement === firstElement) {
+          e.preventDefault();
+          lastElement?.focus();
+        } else if (!e.shiftKey && document.activeElement === lastElement) {
+          e.preventDefault();
+          firstElement?.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      clearTimeout(timeoutId);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
   if (!isOpen) return null;
   return <div className="fixed inset-0 z-50 bg-black bg-opacity-50">
-      <div className="absolute inset-x-0 top-0 h-[85vh] bg-white rounded-b-xl shadow-lg transform transition-transform duration-300 ease-out" style={{
-      transform: isOpen ? 'translateY(0)' : 'translateY(-100%)'
-    }}>
+      <div
+        ref={sheetRef}
+        className="absolute inset-x-0 top-0 h-[85vh] bg-white rounded-b-xl shadow-lg transform transition-transform duration-300 ease-out"
+        style={{
+          transform: isOpen ? 'translateY(0)' : 'translateY(-100%)'
+        }}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="notification-sheet-title"
+      >
         <div className="h-safe-area-top bg-white"></div>
         <div className="flex justify-between items-center p-4 border-b border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900">Notifications</h2>
+          <h2 id="notification-sheet-title" className="text-lg font-bold text-gray-900">Notifications</h2>
           <div className="flex space-x-4">
-            <button onClick={markAllAsRead} className="text-gray-600 focus:outline-none" aria-label="Mark all as read">
+            <button
+              ref={markAllButtonRef}
+              onClick={markAllAsRead}
+              className="text-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded"
+              aria-label="Mark all as read"
+            >
               <BellOffIcon className="h-5 w-5" />
             </button>
-            <button onClick={onClose} className="text-gray-600 focus:outline-none" aria-label="Close">
+            <button
+              onClick={onClose}
+              className="text-gray-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded"
+              aria-label="Close"
+            >
               <XIcon className="h-6 w-6" />
             </button>
           </div>
@@ -86,7 +152,7 @@ export const NotificationSheet = ({
                     {notification.message}
                   </p>
                   <div className="flex justify-end mt-2">
-                    <button onClick={() => deleteNotification(notification.id)} className="text-xs text-gray-500 hover:text-red-500">
+                    <button onClick={() => deleteNotification(notification.id)} className="text-xs text-gray-500 hover:text-orange-500">
                       Dismiss
                     </button>
                   </div>

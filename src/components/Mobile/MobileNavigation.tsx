@@ -1,7 +1,7 @@
-import React from 'react';
-import { HomeIcon, BarChart3Icon, PiggyBankIcon, UserIcon, PlusIcon } from 'lucide-react';
+import { type ReactNode } from 'react';
+import { HomeIcon, BarChart3Icon, PiggyBankIcon, UserIcon, TagIcon } from 'lucide-react';
 type NavigationItem = {
-  icon: React.ReactNode;
+  icon: ReactNode;
   label: string;
   isActive: boolean;
   onClick: () => void;
@@ -17,25 +17,25 @@ export const MobileNavigation = ({
   const navigationItems: NavigationItem[] = [{
     icon: <HomeIcon className="h-6 w-6" />,
     label: 'Home',
-    isActive: activeScreen === 'dashboard',
-    onClick: () => onNavigate('dashboard')
+    isActive: activeScreen === 'home',
+    onClick: () => onNavigate('home')
   }, {
     icon: <BarChart3Icon className="h-6 w-6" />,
     label: 'Budget',
     isActive: activeScreen === 'budget',
     onClick: () => onNavigate('budget')
   }, {
-    icon: <div className="relative -mt-8 bg-orange-600 rounded-full p-3 border-4 border-white shadow-lg">
-          <PlusIcon className="h-6 w-6 text-white" />
+    icon: <div className={`relative -mt-8 rounded-full p-3 border-4 border-white shadow-lg ${activeScreen === 'categories' ? 'bg-orange-600' : 'bg-orange-600'}`}>
+          <TagIcon className="h-6 w-6 text-white" />
         </div>,
     label: '',
-    isActive: false,
-    onClick: () => onNavigate('onboarding')
+    isActive: activeScreen === 'categories',
+    onClick: () => onNavigate('categories')
   }, {
     icon: <PiggyBankIcon className="h-6 w-6" />,
     label: 'Savings',
     isActive: activeScreen === 'savings',
-    onClick: () => onNavigate('budget')
+    onClick: () => onNavigate('savings')
   }, {
     icon: <UserIcon className="h-6 w-6" />,
     label: 'Profile',

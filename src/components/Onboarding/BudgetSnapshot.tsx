@@ -27,7 +27,7 @@ export const BudgetSnapshot = ({
     <div className="w-full max-w-md mx-auto p-4">
       <div className="bg-white rounded-lg shadow-md p-6 sm:p-8 border border-gray-200">
         <div className="mb-6">
-          <Logo variant="default" size="md" withText={true} />
+          <Logo variant="default" size="md" withText={true} tagline={true} />
         </div>
 
         <h2 className="text-xl font-bold text-gray-900 mb-2">
@@ -121,8 +121,8 @@ export const BudgetSnapshot = ({
           
           <div className="flex items-center justify-between">
             <span className="text-gray-900">What's left</span>
-            <span className={`font-medium ${remaining >= 0 ? 'text-green-600' : 'text-red-600'}`}>
-              ${remaining.toLocaleString()}
+            <span className={`font-medium ${remaining >= 0 ? 'text-green-600' : 'text-orange-600'}`}>
+              ${Math.abs(remaining).toLocaleString()}
             </span>
           </div>
         </div>

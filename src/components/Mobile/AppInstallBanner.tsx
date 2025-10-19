@@ -17,7 +17,9 @@ export const AppInstallBanner = ({
   useEffect(() => {
     // Check if device is iOS
     const ua = navigator.userAgent;
-    setIsIOS(/iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream);
+    // Check for iOS devices, excluding IE11/Edge on Windows (which had MSStream)
+    const windowWithMSStream = window as typeof window & { MSStream?: unknown };
+    setIsIOS(/iPad|iPhone|iPod/.test(ua) && !windowWithMSStream.MSStream);
   }, []);
 
   // Early return if feature is disabled (after hooks to follow React rules)

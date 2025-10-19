@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+.sessions/
+audits/
+AUDIT_REPORT.md
+SESSION_SUMMARY.md
+TEST_PLAN.md

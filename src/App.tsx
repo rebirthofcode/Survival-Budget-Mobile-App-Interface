@@ -8,6 +8,8 @@ import { PullToRefresh } from './components/Mobile/PullToRefresh';
 import { MobileDrawer } from './components/Mobile/MobileDrawer';
 import { OfflineIndicator } from './components/Mobile/OfflineIndicator';
 import { HapticFeedback, useHapticFeedback } from './components/Mobile/HapticFeedback';
+import { ExpenseCategories } from './components/ExpenseCategories';
+import { BetaAccessGate, hasBetaAccess } from './components/BetaAccessGate';
 
 type BudgetData = {
   income: number;
@@ -16,70 +18,141 @@ type BudgetData = {
   utilities: number;
 };
 
+type Screen = 'onboarding' | 'home' | 'budget' | 'categories' | 'savings' | 'profile';
+
+const LS = {
+  onboarded: 'onboardingCompleted',
+  budget: 'budgetData',
+  lastSession: 'lastSession',
+} as const;
+
+const SCREEN_ORDER: Screen[] = ['home', 'budget', 'categories', 'savings', 'profile'];
+
+const getTransition = (
+  prev: Screen | null,
+  curr: Screen
+): 'slide-left' | 'slide-right' | 'fade' => {
+  if (!prev) return 'fade';
+  if (prev === 'onboarding' && curr === 'budget') return 'slide-left';
+  const pi = SCREEN_ORDER.indexOf(prev);
+  const ci = SCREEN_ORDER.indexOf(curr);
+  if (pi !== -1 && ci !== -1) return pi < ci ? 'slide-left' : 'slide-right';
+  return 'fade';
+};
+
 const AppContent = () => {
-  const [showOnboarding, setShowOnboarding] = useState(true);
   const [budgetData, setBudgetData] = useState<BudgetData>({
     income: 0,
     rent: 0,
     groceries: 0,
-    utilities: 0
+    utilities: 0,
   });
-  const [currentScreen, setCurrentScreen] = useState<'onboarding' | 'home' | 'budget' | 'savings' | 'profile'>('onboarding');
+
+  const [currentScreen, setCurrentScreen] = useState<Screen>('onboarding');
   const [showNotifications, setShowNotifications] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const [previousScreen, setPreviousScreen] = useState<string | null>(null);
+  const [previousScreen, setPreviousScreen] = useState<Screen | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isReturningUser, setIsReturningUser] = useState(false);
-  
-  const haptic = useHapticFeedback();
+  const [priorities, setPriorities] = useState<any[]>([]);
 
+  const haptic = useHapticFeedback();
+  const safeHaptic = (t: Parameters<typeof haptic.trigger>[0]) => {
+    try {
+      haptic.trigger(t);
+    } catch (error) {
+      // Haptic feedback not supported
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('Haptic feedback not supported:', error);
+      }
+    }
+  };
+
+  // Initial load: determine onboarding vs. home/budget and load saved data
   useEffect(() => {
-    // Check if user has completed onboarding
-    const onboardingCompleted = localStorage.getItem('onboardingCompleted');
-    const savedBudgetData = localStorage.getItem('budgetData');
-    const lastSession = localStorage.getItem('lastSession');
-    const currentTime = Date.now();
-    
+    const onboardingCompleted = localStorage.getItem(LS.onboarded);
+    const savedBudgetData = localStorage.getItem(LS.budget);
+    const savedPriorities = localStorage.getItem('budgetPriorities');
+    const lastSession = localStorage.getItem(LS.lastSession);
+    const now = Date.now();
+
+    // Load priorities if available
+    if (savedPriorities) {
+      try {
+        setPriorities(JSON.parse(savedPriorities));
+      } catch (error) {
+        console.error('Error loading priorities:', error);
+      }
+    }
+
     if (onboardingCompleted === 'true' && savedBudgetData) {
-      setShowOnboarding(false);
       setBudgetData(JSON.parse(savedBudgetData));
-      
-      // Check if this is a new session (user closed and reopened app)
-      // Consider it a new session if more than 5 minutes have passed
-      const isNewSession = !lastSession || (currentTime - parseInt(lastSession)) > 300000;
-      
+
+      const isNewSession = !lastSession || now - parseInt(lastSession, 10) > 86400000; // 24 hours
       if (isNewSession) {
         setIsReturningUser(true);
         setCurrentScreen('home');
       } else {
         setCurrentScreen('budget');
       }
-      
-      // Update last session timestamp
-      localStorage.setItem('lastSession', currentTime.toString());
+
+      localStorage.setItem(LS.lastSession, String(now));
     } else {
       setCurrentScreen('onboarding');
     }
   }, []);
 
+  // Listen for priority changes from localStorage
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const savedPriorities = localStorage.getItem('budgetPriorities');
+      if (savedPriorities) {
+        try {
+          setPriorities(JSON.parse(savedPriorities));
+        } catch (error) {
+          console.error('Error loading priorities:', error);
+        }
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  const handleNavigateWithTransition = (screen: Screen) => {
+    if (currentScreen === screen) return;
+    safeHaptic('light');
+    setIsTransitioning(true);
+    setPreviousScreen(currentScreen);
+
+    // Clear returning user flag when leaving home
+    if (screen !== 'home') setIsReturningUser(false);
+
+    // Small delay lets CSS animation class apply cleanly
+    setTimeout(() => {
+      setCurrentScreen(screen);
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setPreviousScreen(null);
+      }, 300);
+    }, 50);
+  };
+
   const completeOnboarding = (data: BudgetData) => {
-    localStorage.setItem('onboardingCompleted', 'true');
-    localStorage.setItem('budgetData', JSON.stringify(data));
-    localStorage.setItem('lastSession', Date.now().toString());
+    localStorage.setItem(LS.onboarded, 'true');
+    localStorage.setItem(LS.budget, JSON.stringify(data));
+    localStorage.setItem(LS.lastSession, String(Date.now()));
     setBudgetData(data);
-    setShowOnboarding(false);
     setIsReturningUser(false);
     setShowMenu(false);
     setShowNotifications(false);
-    // Go directly to budget after completing onboarding
     handleNavigateWithTransition('budget');
   };
 
   const resetOnboarding = () => {
-    localStorage.removeItem('onboardingCompleted');
-    localStorage.removeItem('budgetData');
-    localStorage.removeItem('lastSession');
-    setShowOnboarding(true);
+    localStorage.removeItem(LS.onboarded);
+    localStorage.removeItem(LS.budget);
+    localStorage.removeItem(LS.lastSession);
     setBudgetData({ income: 0, rent: 0, groceries: 0, utilities: 0 });
     setIsReturningUser(false);
     setShowMenu(false);
@@ -88,75 +161,45 @@ const AppContent = () => {
   };
 
   const handleRefresh = async () => {
-    haptic.trigger('light');
-    return new Promise<void>(resolve => {
+    safeHaptic('light');
+    return new Promise<void>((resolve) => {
       setTimeout(() => {
-        haptic.trigger('medium');
+        safeHaptic('medium');
         resolve();
       }, 1500);
     });
   };
 
-  const handleNavigateWithTransition = (screen: string) => {
-    if (currentScreen === screen) return;
-    haptic.trigger('light');
-    setIsTransitioning(true);
-    setPreviousScreen(currentScreen);
-    
-    // Clear returning user flag when navigating away from home
-    if (screen !== 'home') {
-      setIsReturningUser(false);
-    }
-    
-    setTimeout(() => {
-      setCurrentScreen(screen as any);
-      setTimeout(() => {
-        setIsTransitioning(false);
-        setPreviousScreen(null);
-      }, 300);
-    }, 50);
-  };
-
-  const getTransitionType = () => {
-    const screenOrder = ['home', 'budget', 'savings', 'profile'];
-    if (!previousScreen || !currentScreen) return 'fade';
-    
-    if (previousScreen === 'onboarding' && currentScreen === 'budget') return 'slide-left';
-    
-    const prevIndex = screenOrder.indexOf(previousScreen);
-    const currentIndex = screenOrder.indexOf(currentScreen);
-    
-    if (prevIndex !== -1 && currentIndex !== -1) {
-      return prevIndex < currentIndex ? 'slide-left' : 'slide-right';
-    }
-    
-    return 'fade';
-  };
-
-  // Show onboarding if not completed
-  if (showOnboarding || currentScreen === 'onboarding') {
-    return <Onboarding completeOnboarding={completeOnboarding} />;
-  }
+  const transitionType = getTransition(previousScreen, currentScreen);
+  const transitionClass = isTransitioning
+    ? `motion-safe:animate-${
+        transitionType === 'slide-left'
+          ? 'slide-in-left'
+          : transitionType === 'slide-right'
+          ? 'slide-in-right'
+          : 'fade-in'
+      }`
+    : '';
 
   // Notifications overlay
   const notificationsOverlay = showNotifications ? (
-    <NotificationSheet 
-      isOpen={showNotifications} 
+    <NotificationSheet
+      isOpen={showNotifications}
       onClose={() => {
-        haptic.trigger('light');
+        safeHaptic('light');
         setShowNotifications(false);
-      }} 
+      }}
     />
   ) : null;
 
   // Menu drawer
   const menuDrawer = showMenu ? (
-    <MobileDrawer 
-      isOpen={showMenu} 
+    <MobileDrawer
+      isOpen={showMenu}
       onClose={() => {
-        haptic.trigger('light');
+        safeHaptic('light');
         setShowMenu(false);
-      }} 
+      }}
       userName="User"
       email="user@example.com"
       onNavigate={handleNavigateWithTransition}
@@ -164,33 +207,41 @@ const AppContent = () => {
     />
   ) : null;
 
+  // Early return for onboarding
+  if (currentScreen === 'onboarding') {
+    return <Onboarding completeOnboarding={completeOnboarding} />;
+  }
+
   // Determine screen content
-  let screenContent;
-  
+  let screenContent: JSX.Element | null = null;
+
   switch (currentScreen) {
     case 'home':
-      // Only show welcome back screen for returning users
       screenContent = (
         <div className="w-full pb-20">
-          <MobileHeader 
+          <MobileHeader
             showLogo={true}
             onNotificationClick={() => {
-              haptic.trigger('light');
+              safeHaptic('light');
               setShowNotifications(true);
             }}
             onMenuClick={() => {
-              haptic.trigger('light');
+              safeHaptic('light');
               setShowMenu(!showMenu);
             }}
           />
           <PullToRefresh onRefresh={handleRefresh}>
             <div className="w-full max-w-md mx-auto p-4">
               <div className="bg-white rounded-lg shadow-md p-6 sm:p-8 border border-gray-200">
-                <h2 className="text-xl font-bold text-gray-900 mb-4">Welcome back!</h2>
+                {isReturningUser && (
+                  <p className="text-xs text-gray-500 mb-2">Welcome back 👋</p>
+                )}
+                <h2 className="text-xl font-bold text-gray-900 mb-4">You’re set up</h2>
                 <p className="text-gray-600 mb-6">
-                  Your budget is set up. Use the navigation below to view your budget details.
+                  Your budget is ready. Use the navigation below to view details.
                 </p>
                 <button
+                  aria-label="View your budget"
                   onClick={() => handleNavigateWithTransition('budget')}
                   className="w-full py-4 px-6 bg-orange-500 text-white rounded-md font-medium shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
                 >
@@ -202,41 +253,63 @@ const AppContent = () => {
         </div>
       );
       break;
-      
+
     case 'budget':
       screenContent = (
         <div className="w-full pb-20">
-          <MobileHeader 
+          <MobileHeader
             title="Budget"
             showLogo={false}
             onNotificationClick={() => {
-              haptic.trigger('light');
+              safeHaptic('light');
               setShowNotifications(true);
             }}
             onMenuClick={() => {
-              haptic.trigger('light');
+              safeHaptic('light');
               setShowMenu(!showMenu);
             }}
           />
-          <BudgetApp
-            initialIncome={budgetData.income}
-          />
+          <BudgetApp initialIncome={budgetData.income} />
         </div>
       );
       break;
-      
-    case 'savings':
+
+    case 'categories':
       screenContent = (
         <div className="w-full pb-20">
-          <MobileHeader 
-            title="Savings"
+          <MobileHeader
+            title="Categories"
             showLogo={false}
             onNotificationClick={() => {
-              haptic.trigger('light');
+              safeHaptic('light');
               setShowNotifications(true);
             }}
             onMenuClick={() => {
-              haptic.trigger('light');
+              safeHaptic('light');
+              setShowMenu(!showMenu);
+            }}
+          />
+          <PullToRefresh onRefresh={handleRefresh}>
+            <div className="w-full p-4">
+              <ExpenseCategories priorities={priorities} />
+            </div>
+          </PullToRefresh>
+        </div>
+      );
+      break;
+
+    case 'savings':
+      screenContent = (
+        <div className="w-full pb-20">
+          <MobileHeader
+            title="Savings"
+            showLogo={false}
+            onNotificationClick={() => {
+              safeHaptic('light');
+              setShowNotifications(true);
+            }}
+            onMenuClick={() => {
+              safeHaptic('light');
               setShowMenu(!showMenu);
             }}
           />
@@ -249,19 +322,19 @@ const AppContent = () => {
         </div>
       );
       break;
-      
+
     case 'profile':
       screenContent = (
         <div className="w-full pb-20">
-          <MobileHeader 
+          <MobileHeader
             title="Profile"
             showLogo={false}
             onNotificationClick={() => {
-              haptic.trigger('light');
+              safeHaptic('light');
               setShowNotifications(true);
             }}
             onMenuClick={() => {
-              haptic.trigger('light');
+              safeHaptic('light');
               setShowMenu(!showMenu);
             }}
           />
@@ -269,39 +342,35 @@ const AppContent = () => {
             <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Profile</h2>
               <button
+                aria-label="Reset app and start over"
                 onClick={resetOnboarding}
-                className="w-full py-3 px-4 bg-red-500 text-white rounded-md font-medium shadow-sm hover:bg-red-600"
+                className="w-full py-3 px-4 bg-red-500 text-white rounded-md font-medium shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
               >
-                Reset Onboarding
+                Reset app & start over
               </button>
             </div>
           </div>
         </div>
       );
       break;
-      
+
     default:
       screenContent = null;
   }
-
-  const transitionType = getTransitionType();
-  const transitionClass = isTransitioning 
-    ? `animate-${transitionType === 'slide-left' ? 'slide-in-left' : transitionType === 'slide-right' ? 'slide-in-right' : 'fade-in'}` 
-    : '';
 
   return (
     <HapticFeedback>
       <div className={`relative ${transitionClass}`}>
         {screenContent}
-        
-        {/* Show navigation on all screens except onboarding */}
+
+        {/* Bottom nav on all non-onboarding screens */}
         {currentScreen !== 'onboarding' && (
-          <MobileNavigation 
+          <MobileNavigation
             activeScreen={currentScreen}
             onNavigate={handleNavigateWithTransition}
           />
         )}
-        
+
         {notificationsOverlay}
         {menuDrawer}
         <OfflineIndicator />
@@ -311,6 +380,42 @@ const AppContent = () => {
 };
 
 export function App() {
+  const [hasAccess, setHasAccess] = useState(false);
+  const [isCheckingAccess, setIsCheckingAccess] = useState(true);
+
+  useEffect(() => {
+    // Check if user has beta access on mount
+    const checkAccess = () => {
+      const access = hasBetaAccess();
+      setHasAccess(access);
+      setIsCheckingAccess(false);
+    };
+
+    checkAccess();
+  }, []);
+
+  const handleGrantAccess = () => {
+    setHasAccess(true);
+  };
+
+  // Show loading state briefly
+  if (isCheckingAccess) {
+    return (
+      <div className="flex w-full min-h-screen bg-gray-50 items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show beta gate if no access
+  if (!hasAccess) {
+    return <BetaAccessGate onGrantAccess={handleGrantAccess} />;
+  }
+
+  // Show main app if access granted
   return (
     <div className="flex w-full min-h-screen bg-gray-50">
       <AppContent />

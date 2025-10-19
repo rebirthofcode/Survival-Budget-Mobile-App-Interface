@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { RefreshCwIcon } from 'lucide-react';
+import { PULL_TO_REFRESH_THRESHOLD, TRANSITION_DURATION } from '../../constants';
 type PullToRefreshProps = {
   onRefresh: () => Promise<void>;
   children: React.ReactNode;
@@ -36,9 +37,9 @@ export const PullToRefresh = ({
     if (!isPulling || !contentRef.current) return;
     const pullDistance = currentY.current - startY.current;
     // If pulled enough, trigger refresh
-    if (pullDistance > 60) {
+    if (pullDistance > PULL_TO_REFRESH_THRESHOLD) {
       setRefreshing(true);
-      contentRef.current.style.transform = 'translateY(60px)';
+      contentRef.current.style.transform = `translateY(${PULL_TO_REFRESH_THRESHOLD}px)`;
       try {
         await onRefresh();
       } catch (error) {
@@ -48,31 +49,31 @@ export const PullToRefresh = ({
       }
       setTimeout(() => {
         if (contentRef.current) {
-          contentRef.current.style.transition = 'transform 0.3s ease-out';
+          contentRef.current.style.transition = `transform ${TRANSITION_DURATION}ms ease-out`;
           contentRef.current.style.transform = 'translateY(0)';
           setTimeout(() => {
             setRefreshing(false);
             if (contentRef.current) {
               contentRef.current.style.transition = '';
             }
-          }, 300);
+          }, TRANSITION_DURATION);
         }
       }, 1000);
     } else {
       // Not pulled enough, snap back
-      contentRef.current.style.transition = 'transform 0.3s ease-out';
+      contentRef.current.style.transition = `transform ${TRANSITION_DURATION}ms ease-out`;
       contentRef.current.style.transform = 'translateY(0)';
       setTimeout(() => {
         if (contentRef.current) {
           contentRef.current.style.transition = '';
         }
-      }, 300);
+      }, TRANSITION_DURATION);
     }
     setIsPulling(false);
   };
   return <div className="relative w-full overflow-hidden" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
       <div className="absolute top-0 left-0 right-0 flex justify-center" style={{
-      height: '60px',
+      height: `${PULL_TO_REFRESH_THRESHOLD}px`,
       transform: 'translateY(-100%)',
       opacity: refreshing ? 1 : 0,
       transition: 'opacity 0.2s ease-out'

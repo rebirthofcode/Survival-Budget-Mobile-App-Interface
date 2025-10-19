@@ -50,6 +50,12 @@ export const EssentialsSetup = ({
     setUtilities(value ? parseInt(value) : 0);
   };
 
+  // Format numbers with commas for display
+  const formattedIncome = income > 0 ? income.toLocaleString() : '';
+  const formattedRent = rent > 0 ? rent.toLocaleString() : '';
+  const formattedGroceries = groceries > 0 ? groceries.toLocaleString() : '';
+  const formattedUtilities = utilities > 0 ? utilities.toLocaleString() : '';
+
   return (
     <div className="w-full max-w-md mx-auto p-4">
       <div className="bg-white rounded-lg shadow-md p-6 sm:p-8 border border-gray-200">
@@ -74,13 +80,13 @@ export const EssentialsSetup = ({
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <DollarSignIcon className="h-5 w-5 text-gray-400" />
             </div>
-            <input 
-              type="text" 
-              name="income" 
+            <input
+              type="text"
+              name="income"
               id="income"
               className="block w-full pl-10 pr-16 py-3 text-lg border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
               placeholder="0"
-              value={income || ''}
+              value={formattedIncome}
               onChange={handleIncomeChange}
               inputMode="numeric"
             />
@@ -105,13 +111,13 @@ export const EssentialsSetup = ({
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <DollarSignIcon className="h-5 w-5 text-gray-400" />
               </div>
-              <input 
-                type="text" 
-                name="rent" 
+              <input
+                type="text"
+                name="rent"
                 id="rent"
                 className="block w-full pl-10 pr-3 py-3 border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
                 placeholder="0"
-                value={rent || ''}
+                value={formattedRent}
                 onChange={handleRentChange}
                 inputMode="numeric"
               />
@@ -128,13 +134,13 @@ export const EssentialsSetup = ({
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <DollarSignIcon className="h-5 w-5 text-gray-400" />
               </div>
-              <input 
-                type="text" 
-                name="groceries" 
+              <input
+                type="text"
+                name="groceries"
                 id="groceries"
                 className="block w-full pl-10 pr-3 py-3 border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
                 placeholder="0"
-                value={groceries || ''}
+                value={formattedGroceries}
                 onChange={handleGroceriesChange}
                 inputMode="numeric"
               />
@@ -151,13 +157,13 @@ export const EssentialsSetup = ({
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <DollarSignIcon className="h-5 w-5 text-gray-400" />
               </div>
-              <input 
-                type="text" 
-                name="utilities" 
+              <input
+                type="text"
+                name="utilities"
                 id="utilities"
                 className="block w-full pl-10 pr-3 py-3 border-gray-300 rounded-md focus:ring-orange-500 focus:border-orange-500"
                 placeholder="0"
-                value={utilities || ''}
+                value={formattedUtilities}
                 onChange={handleUtilitiesChange}
                 inputMode="numeric"
               />

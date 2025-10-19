@@ -9,12 +9,14 @@ type SwipeableExpenseItemProps = {
   };
   onToggle: () => void;
   onEdit: (amount: number) => void;
+  onEditClick?: () => void; // NEW: trigger modal instead of inline edit
   onDelete: () => void;
 };
 export const SwipeableExpenseItem = ({
   expense,
   onToggle,
   onEdit,
+  onEditClick,
   onDelete
 }: SwipeableExpenseItemProps) => {
   const [swipeOffset, setSwipeOffset] = useState(0);
@@ -82,8 +84,14 @@ export const SwipeableExpenseItem = ({
   };
   const handleEdit = () => {
     triggerHapticFeedback();
-    setIsEditing(true);
-    resetSwipe();
+    // Use modal if available, otherwise fall back to inline editing
+    if (onEditClick) {
+      onEditClick();
+      resetSwipe();
+    } else {
+      setIsEditing(true);
+      resetSwipe();
+    }
   };
   const handleDelete = () => {
     triggerHapticFeedback();
@@ -120,7 +128,7 @@ export const SwipeableExpenseItem = ({
         <button onClick={handleEdit} className="bg-blue-500 text-white flex items-center justify-center w-[75px] h-full" aria-label="Edit expense">
           <EditIcon className="h-5 w-5" />
         </button>
-        <button onClick={handleDelete} className="bg-red-500 text-white flex items-center justify-center w-[75px] h-full" aria-label="Delete expense">
+        <button onClick={handleDelete} className="bg-orange-500 text-white flex items-center justify-center w-[75px] h-full" aria-label="Delete expense">
           <TrashIcon className="h-5 w-5" />
         </button>
       </div>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { XIcon } from 'lucide-react';
+import { DRAG_CLOSE_THRESHOLD, TRANSITION_DURATION } from '../../constants';
 type BottomSheetProps = {
   isOpen: boolean;
   onClose: () => void;
@@ -54,18 +55,18 @@ export const BottomSheet = ({
   const handleTouchEnd = () => {
     if (!isDragging || !sheetRef.current) return;
     const deltaY = currentY - startY;
-    // If dragged down more than 100px, close the sheet
-    if (deltaY > 100) {
+    // If dragged down more than threshold, close the sheet
+    if (deltaY > DRAG_CLOSE_THRESHOLD) {
       onClose();
     } else {
       // Otherwise snap back
-      sheetRef.current.style.transition = 'transform 0.3s ease-out';
+      sheetRef.current.style.transition = `transform ${TRANSITION_DURATION}ms ease-out`;
       sheetRef.current.style.transform = 'translateY(0)';
       setTimeout(() => {
         if (sheetRef.current) {
           sheetRef.current.style.transition = '';
         }
-      }, 300);
+      }, TRANSITION_DURATION);
     }
     setIsDragging(false);
   };
