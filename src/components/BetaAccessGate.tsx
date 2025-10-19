@@ -92,7 +92,7 @@ export const BetaAccessGate = ({ onGrantAccess }: BetaAccessGateProps) => {
         </div>
 
         {/* Access Form Card */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-200">
+        <div className="bg-white rounded-2xl shadow-xl p-8">
           <div className="mb-6">
             <h2 className="text-xl font-bold text-gray-900 mb-2">
               Welcome, Beta Tester!
