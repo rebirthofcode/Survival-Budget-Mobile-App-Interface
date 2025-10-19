@@ -269,7 +269,12 @@ const AppContent = () => {
               setShowMenu(!showMenu);
             }}
           />
-          <BudgetApp initialIncome={budgetData.income} />
+          <BudgetApp
+            initialIncome={budgetData.income}
+            initialRent={budgetData.rent}
+            initialGroceries={budgetData.groceries}
+            initialUtilities={budgetData.utilities}
+          />
         </div>
       );
       break;
