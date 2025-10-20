@@ -244,7 +244,7 @@ export const BetaAccessGate = ({ onGrantAccess }: BetaAccessGateProps) => {
               href="https://articulatedigital.co"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-600 hover:text-orange-600 font-medium transition-colors"
+              className="text-orange-600 hover:text-orange-700 font-medium transition-colors"
             >
               Articulate Digital
             </a>
