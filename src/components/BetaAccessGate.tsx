@@ -56,11 +56,32 @@ export const BetaAccessGate = ({ onGrantAccess }: BetaAccessGateProps) => {
         version: 'beta-v1'
       };
 
+      // Send to Formspree
+      const formspreeResponse = await fetch('https://formspree.io/f/xanpkalq', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: userInfo.name,
+          email: userInfo.email,
+          accessGrantedAt: userInfo.accessGrantedAt,
+          version: userInfo.version,
+          _subject: `New Beta Tester: ${userInfo.name}`
+        })
+      });
+
+      if (!formspreeResponse.ok) {
+        // Log error but don't block user access
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Formspree submission failed, but continuing with access');
+        }
+      }
+
+      // Store in localStorage regardless of Formspree result
       localStorage.setItem(BETA_USER_INFO_KEY, JSON.stringify(userInfo));
       localStorage.setItem(BETA_ACCESS_KEY, 'true');
 
-      // Optional: Send to analytics or backend
-      // You can add a fetch() call here to log beta testers
       if (process.env.NODE_ENV === 'development') {
         console.log('Beta tester registered:', userInfo);
       }
@@ -71,8 +92,29 @@ export const BetaAccessGate = ({ onGrantAccess }: BetaAccessGateProps) => {
       }, 500);
 
     } catch (err) {
-      setError('Something went wrong. Please try again.');
-      setIsSubmitting(false);
+      // If Formspree fails, still grant access but log the error
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error during registration:', err);
+      }
+
+      // Try to save to localStorage anyway
+      try {
+        const userInfo = {
+          name: name.trim(),
+          email: email.trim().toLowerCase(),
+          accessGrantedAt: new Date().toISOString(),
+          version: 'beta-v1'
+        };
+        localStorage.setItem(BETA_USER_INFO_KEY, JSON.stringify(userInfo));
+        localStorage.setItem(BETA_ACCESS_KEY, 'true');
+
+        setTimeout(() => {
+          onGrantAccess();
+        }, 500);
+      } catch {
+        setError('Something went wrong. Please try again.');
+        setIsSubmitting(false);
+      }
     }
   };
 
