@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { IncomeInput } from './IncomeInput';
 import { SpendingPlan } from './SpendingPlan';
-import { HomeIcon, CarIcon, CoffeeIcon, PiggyBankIcon, PlusCircleIcon, ChevronDownIcon, ChevronUpIcon, CheckCircleIcon, AlertTriangleIcon } from 'lucide-react';
+import { HomeIcon, CarIcon, CoffeeIcon, PiggyBankIcon, PlusCircleIcon, ChevronDownIcon, ChevronUpIcon, CheckCircleIcon, AlertTriangleIcon, Pencil } from 'lucide-react';
 import { BottomSheet } from './Mobile/BottomSheet';
 import { BudgetExpenseList } from './Mobile/BudgetExpenseList';
 import { ExpenseModal } from './Mobile/ExpenseModal';
@@ -136,6 +136,8 @@ export const BudgetApp = ({
   const [showExpenseModal, setShowExpenseModal] = useState(false);
   const [expenseModalMode, setExpenseModalMode] = useState<'add' | 'edit'>('add');
   const [editingExpenseId, setEditingExpenseId] = useState<string | null>(null);
+  const [showEditIncomeModal, setShowEditIncomeModal] = useState(false);
+  const [tempIncome, setTempIncome] = useState(income);
 
   // Toast state for undo functionality
   const [showToast, setShowToast] = useState(false);
@@ -532,7 +534,19 @@ export const BudgetApp = ({
         <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg shadow-md p-4 text-white">
           <div className="flex items-center justify-between mb-3">
             <div>
-              <p className="text-white text-sm font-medium">Monthly Income</p>
+              <div className="flex items-center gap-2">
+                <p className="text-white text-sm font-medium">Monthly Income</p>
+                <button
+                  onClick={() => {
+                    setTempIncome(income);
+                    setShowEditIncomeModal(true);
+                  }}
+                  className="p-1 hover:bg-orange-400 rounded transition-colors"
+                  aria-label="Edit income"
+                >
+                  <Pencil className="h-3.5 w-3.5" />
+                </button>
+              </div>
               <p className="text-xl font-bold">${income.toLocaleString()}</p>
             </div>
             <div className="text-right">
@@ -759,8 +773,11 @@ export const BudgetApp = ({
                 </div>
               ) : (
                 <>
-                  <p className="text-sm text-gray-500 mb-3">
+                  <p className="text-sm text-gray-500 mb-3 md:hidden">
                     Swipe left on an expense to edit or delete it
+                  </p>
+                  <p className="text-sm text-gray-500 mb-3 hidden md:block">
+                    Use the edit and delete buttons to manage expenses
                   </p>
                   <BudgetExpenseList
                     expenses={selectedPriority.expenses}
@@ -791,6 +808,40 @@ export const BudgetApp = ({
               : undefined
           }
         />
+      )}
+
+      {/* Edit Income Modal */}
+      {showEditIncomeModal && (
+        <BottomSheet
+          isOpen={showEditIncomeModal}
+          onClose={() => setShowEditIncomeModal(false)}
+          title="Edit Monthly Income"
+          height="small"
+        >
+          <div className="p-6">
+            <IncomeInput
+              income={tempIncome}
+              setIncome={setTempIncome}
+            />
+            <div className="flex gap-3 mt-6">
+              <button
+                onClick={() => setShowEditIncomeModal(false)}
+                className="flex-1 py-3 px-4 border border-gray-300 text-gray-700 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setIncome(tempIncome);
+                  setShowEditIncomeModal(false);
+                }}
+                className="flex-1 py-3 px-4 bg-orange-600 text-white rounded-lg font-medium hover:bg-orange-700 transition-colors"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </BottomSheet>
       )}
 
       {/* Toast notification with undo */}

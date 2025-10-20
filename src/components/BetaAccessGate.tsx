@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { MailIcon, UserIcon, AlertCircleIcon } from 'lucide-react';
-import { Logo } from './Logo/Logo';
 
 type BetaAccessGateProps = {
   onGrantAccess: () => void;
@@ -122,13 +121,24 @@ export const BetaAccessGate = ({ onGrantAccess }: BetaAccessGateProps) => {
     <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
-            <Logo size="lg" withText={false} />
+        <div className="text-center mb-6">
+          <div className="flex justify-center mb-3">
+            <svg width="64" height="64" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="36" height="36" rx="8" fill="white" stroke="#FF6B35" strokeWidth="2" />
+              <text x="20" y="16" fontFamily="Arial, sans-serif" fontSize="12" fill="#FF6B35" fontWeight="700" textAnchor="middle">
+                $
+              </text>
+              <rect x="14" y="22" width="12" height="2" rx="1" fill="#FF6B35" />
+              <rect x="12" y="26" width="16" height="2" rx="1" fill="#FF6B35" />
+              <rect x="10" y="30" width="20" height="2" rx="1" fill="#FF6B35" />
+            </svg>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-3xl font-bold text-gray-900 mb-1">
             Survival Budget
           </h1>
+          <p className="text-sm text-gray-600 mb-3">
+            Priority-based budgeting
+          </p>
           <p className="text-sm text-orange-600 font-medium uppercase tracking-wide">
             Beta Access
           </p>

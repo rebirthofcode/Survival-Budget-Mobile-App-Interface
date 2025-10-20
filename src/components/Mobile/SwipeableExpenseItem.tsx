@@ -153,11 +153,30 @@ export const SwipeableExpenseItem = ({
                   Save
                 </button>
               </div>
-            </div> : <div className="flex items-center">
-              <span className="text-gray-700 font-medium mr-4">
+            </div> : <div className="flex items-center gap-2">
+              <span className="text-gray-700 font-medium">
                 ${expense.amount}
               </span>
-              <label className="inline-flex items-center cursor-pointer">
+
+              {/* Desktop-only edit/delete buttons */}
+              <div className="hidden md:flex items-center gap-1 ml-2">
+                <button
+                  onClick={handleEdit}
+                  className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                  aria-label="Edit expense"
+                >
+                  <EditIcon className="h-4 w-4" />
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors"
+                  aria-label="Delete expense"
+                >
+                  <TrashIcon className="h-4 w-4" />
+                </button>
+              </div>
+
+              <label className="inline-flex items-center cursor-pointer ml-2">
                 <div className="relative">
                   <input type="checkbox" className="sr-only" checked={expense.enabled} onChange={() => {
                 triggerHapticFeedback();
@@ -170,8 +189,8 @@ export const SwipeableExpenseItem = ({
             </div>}
         </div>
       </div>
-      {/* Hint for swipe */}
-      {swipeOffset === 0 && !isEditing && <div className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-300 text-xs animate-pulse">
+      {/* Hint for swipe - mobile only */}
+      {swipeOffset === 0 && !isEditing && <div className="md:hidden absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-300 text-xs animate-pulse">
           Swipe left
         </div>}
     </div>;
