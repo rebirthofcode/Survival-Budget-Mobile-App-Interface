@@ -107,7 +107,15 @@ export const BudgetApp = ({
   };
 
   const [priorities, setPriorities] = useState<Priority[]>(() => {
-    // Check if we have saved priorities first
+    // If we have onboarding data (fresh user just completed setup), use that
+    const hasOnboardingData = initialRent || initialGroceries || initialUtilities;
+
+    if (hasOnboardingData) {
+      // User just completed onboarding - use fresh data, ignore old localStorage
+      return getInitialPriorities();
+    }
+
+    // Otherwise, check if we have saved priorities from previous session
     const savedPriorities = localStorage.getItem('budgetPriorities');
     if (savedPriorities) {
       try {
@@ -118,7 +126,8 @@ export const BudgetApp = ({
         }
       }
     }
-    // Otherwise use initial priorities from onboarding
+
+    // Fallback: no onboarding data and no saved data - start empty
     return getInitialPriorities();
   });
   const [expandedPriorities, setExpandedPriorities] = useState<number[]>([]);
