@@ -234,8 +234,8 @@ export const BetaAccessGate = ({ onGrantAccess }: BetaAccessGateProps) => {
         <div className="text-center mt-6">
           <p className="text-sm text-gray-600">
             Questions? Contact us at{' '}
-            <a href="mailto:support@survivalbudget.com" className="text-orange-600 hover:text-orange-700 font-medium">
-              support@survivalbudget.com
+            <a href="mailto:hello@articuladigital.co?subject=Survival%20Budget%20Beta%20Feedback" className="text-orange-600 hover:text-orange-700 font-medium">
+              hello@articuladigital.co
             </a>
           </p>
         </div>
