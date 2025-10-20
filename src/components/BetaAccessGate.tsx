@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { ShieldCheckIcon, MailIcon, UserIcon, AlertCircleIcon } from 'lucide-react';
+import { MailIcon, UserIcon, AlertCircleIcon } from 'lucide-react';
+import { Logo } from './Logo/Logo';
 
 type BetaAccessGateProps = {
   onGrantAccess: () => void;
@@ -80,8 +81,8 @@ export const BetaAccessGate = ({ onGrantAccess }: BetaAccessGateProps) => {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-orange-600 rounded-full mb-4">
-            <ShieldCheckIcon className="h-8 w-8 text-white" />
+          <div className="flex justify-center mb-4">
+            <Logo size="lg" withText={false} />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Survival Budget
