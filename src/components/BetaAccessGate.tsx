@@ -151,7 +151,7 @@ export const BetaAccessGate = ({ onGrantAccess }: BetaAccessGateProps) => {
               Welcome, Beta Tester!
             </h2>
             <p className="text-gray-600 text-sm">
-              You've been selected to test our priority-based budgeting app.
+              Thank you for testing our priority-based budgeting app.
               Please provide your details to continue.
             </p>
           </div>
@@ -234,8 +234,8 @@ export const BetaAccessGate = ({ onGrantAccess }: BetaAccessGateProps) => {
         <div className="text-center mt-6">
           <p className="text-sm text-gray-600">
             Questions? Contact us at{' '}
-            <a href="mailto:hello@articuladigital.co?subject=Survival%20Budget%20Beta%20Feedback" className="text-orange-600 hover:text-orange-700 font-medium">
-              hello@articuladigital.co
+            <a href="mailto:hello@articulatedigital.co?subject=Survival%20Budget%20Beta%20Feedback" className="text-orange-600 hover:text-orange-700 font-medium">
+              hello@articulatedigital.co
             </a>
           </p>
           <p className="text-xs text-gray-500 mt-3">
