@@ -241,12 +241,12 @@ export const BetaAccessGate = ({ onGrantAccess }: BetaAccessGateProps) => {
           <p className="text-xs text-gray-500 mt-3">
             Built by{' '}
             <a
-              href="https://articuladigital.co"
+              href="https://articulatedigital.co"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-600 hover:text-orange-600 font-medium transition-colors"
             >
-              Articula Digital
+              Articulate Digital
             </a>
           </p>
         </div>
