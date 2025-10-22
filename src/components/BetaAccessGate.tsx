@@ -241,11 +241,11 @@ export const BetaAccessGate = ({ onGrantAccess }: BetaAccessGateProps) => {
 
         {/* Footer */}
         <div className="text-center mt-6">
-          <p className="text-sm font-medium text-gray-700 mb-4">
+          <p className="text-sm font-medium text-gray-800 mb-4">
             Stop tracking. Start prioritizing.
           </p>
           <p className="text-sm text-gray-600">
-            Questions? Contact us at{' '}
+            Questions? Reach us at{' '}
             <a href="mailto:hello@articulatedigital.co?subject=Survival%20Budget%20Beta%20Feedback" className="text-orange-600 hover:text-orange-700 font-medium">
               hello@articulatedigital.co
             </a>
