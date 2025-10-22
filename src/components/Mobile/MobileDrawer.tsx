@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { XIcon, HomeIcon, BarChart3Icon, PiggyBankIcon, UserIcon, SettingsIcon, RotateCcwIcon, HelpCircleIcon, CalendarIcon, TagIcon } from 'lucide-react';
+import { XIcon, HomeIcon, BarChart3Icon, PiggyBankIcon, UserIcon, SettingsIcon, RotateCcwIcon, HelpCircleIcon, CalendarIcon, TagIcon, ShieldIcon } from 'lucide-react';
 import { Logo } from '../Logo/Logo';
 
 type MobileDrawerProps = {
@@ -160,11 +160,14 @@ export const MobileDrawer = ({
             <span>Categories</span>
           </button>
           <button
-            onClick={() => handleNavigate('history')}
-            className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100"
+            disabled
+            className="w-full flex items-center justify-between px-4 py-3 text-gray-400 cursor-not-allowed"
           >
-            <CalendarIcon className="h-5 w-5 mr-3 text-gray-500" />
-            <span>Budget History</span>
+            <div className="flex items-center">
+              <CalendarIcon className="h-5 w-5 mr-3 text-gray-400" />
+              <span>Budget History</span>
+            </div>
+            <span className="text-xs px-2 py-1 bg-gray-100 text-gray-500 rounded">Coming Soon</span>
           </button>
           <button
             onClick={() => handleNavigate('savings')}
@@ -187,19 +190,32 @@ export const MobileDrawer = ({
             More
           </div>
           <button
-            onClick={() => handleNavigate('settings')}
-            className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100"
+            disabled
+            className="w-full flex items-center justify-between px-4 py-3 text-gray-400 cursor-not-allowed"
           >
-            <SettingsIcon className="h-5 w-5 mr-3 text-gray-500" />
-            <span>Settings</span>
+            <div className="flex items-center">
+              <SettingsIcon className="h-5 w-5 mr-3 text-gray-400" />
+              <span>Settings</span>
+            </div>
+            <span className="text-xs px-2 py-1 bg-gray-100 text-gray-500 rounded">Coming Soon</span>
           </button>
           <button
-            onClick={() => handleNavigate('help')}
+            disabled
+            className="w-full flex items-center justify-between px-4 py-3 text-gray-400 cursor-not-allowed"
+          >
+            <div className="flex items-center">
+              <HelpCircleIcon className="h-5 w-5 mr-3 text-gray-400" />
+              <span>Help & Support</span>
+            </div>
+            <span className="text-xs px-2 py-1 bg-gray-100 text-gray-500 rounded">Coming Soon</span>
+          </button>
+          <a
+            href="/privacy"
             className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100"
           >
-            <HelpCircleIcon className="h-5 w-5 mr-3 text-gray-500" />
-            <span>Help & Support</span>
-          </button>
+            <ShieldIcon className="h-5 w-5 mr-3 text-gray-500" />
+            <span>Privacy</span>
+          </a>
         </div>
 
         {/* Reset App (was Log Out) */}
