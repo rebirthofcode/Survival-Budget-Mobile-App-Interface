@@ -170,18 +170,24 @@ export const MobileDrawer = ({
             <span className="text-xs px-2 py-1 bg-gray-100 text-gray-500 rounded">Coming Soon</span>
           </button>
           <button
-            onClick={() => handleNavigate('savings')}
-            className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100"
+            disabled
+            className="w-full flex items-center justify-between px-4 py-3 text-gray-400 cursor-not-allowed"
           >
-            <PiggyBankIcon className="h-5 w-5 mr-3 text-gray-500" />
-            <span>Savings</span>
+            <div className="flex items-center">
+              <PiggyBankIcon className="h-5 w-5 mr-3 text-gray-400" />
+              <span>Savings</span>
+            </div>
+            <span className="text-xs px-2 py-1 bg-gray-100 text-gray-500 rounded">Coming Soon</span>
           </button>
           <button
-            onClick={() => handleNavigate('profile')}
-            className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100"
+            disabled
+            className="w-full flex items-center justify-between px-4 py-3 text-gray-400 cursor-not-allowed"
           >
-            <UserIcon className="h-5 w-5 mr-3 text-gray-500" />
-            <span>Profile</span>
+            <div className="flex items-center">
+              <UserIcon className="h-5 w-5 mr-3 text-gray-400" />
+              <span>Profile</span>
+            </div>
+            <span className="text-xs px-2 py-1 bg-gray-100 text-gray-500 rounded">Coming Soon</span>
           </button>
         </div>
 
