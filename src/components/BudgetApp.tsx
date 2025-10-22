@@ -398,32 +398,66 @@ export const BudgetApp = ({
   };
 
   // Update existing expense (for modal)
-  const updateExpense = (name: string, amount: number, category?: ExpenseCategory, savingsGoalId?: string) => {
+  const updateExpense = (name: string, amount: number, category?: ExpenseCategory, savingsGoalId?: string, newPriorityId?: number) => {
     if (selectedPriorityId && editingExpenseId) {
       // Get the old expense to check for savings goal changes
       const priority = priorities.find(p => p.id === selectedPriorityId);
       const oldExpense = priority?.expenses.find(e => e.id === editingExpenseId);
 
-      setPriorities(priorities.map(priority => {
-        if (priority.id === selectedPriorityId) {
-          return {
-            ...priority,
-            expenses: priority.expenses.map(expense => {
-              if (expense.id === editingExpenseId) {
-                return {
-                  ...expense,
+      // Check if we're moving the expense to a different priority
+      const isMovingPriority = newPriorityId && newPriorityId !== selectedPriorityId;
+
+      if (isMovingPriority) {
+        // Moving expense to a different priority
+        setPriorities(priorities.map(p => {
+          if (p.id === selectedPriorityId) {
+            // Remove expense from current priority
+            return {
+              ...p,
+              expenses: p.expenses.filter(e => e.id !== editingExpenseId)
+            };
+          } else if (p.id === newPriorityId) {
+            // Add updated expense to new priority
+            return {
+              ...p,
+              expenses: [
+                ...p.expenses,
+                {
+                  id: editingExpenseId,
                   name,
                   amount,
+                  enabled: oldExpense?.enabled ?? true,
                   category,
                   savingsGoalId
-                };
-              }
-              return expense;
-            })
-          };
-        }
-        return priority;
-      }));
+                }
+              ]
+            };
+          }
+          return p;
+        }));
+      } else {
+        // Update expense in same priority
+        setPriorities(priorities.map(priority => {
+          if (priority.id === selectedPriorityId) {
+            return {
+              ...priority,
+              expenses: priority.expenses.map(expense => {
+                if (expense.id === editingExpenseId) {
+                  return {
+                    ...expense,
+                    name,
+                    amount,
+                    category,
+                    savingsGoalId
+                  };
+                }
+                return expense;
+              })
+            };
+          }
+          return priority;
+        }));
+      }
 
       // Handle savings goal updates
       if (oldExpense) {
@@ -456,11 +490,11 @@ export const BudgetApp = ({
   };
 
   // Handle modal save
-  const handleExpenseModalSave = (name: string, amount: number, category?: ExpenseCategory, savingsGoalId?: string) => {
+  const handleExpenseModalSave = (name: string, amount: number, category?: ExpenseCategory, savingsGoalId?: string, newPriorityId?: number) => {
     if (expenseModalMode === 'add') {
       addExpense(name, amount, category, savingsGoalId);
     } else {
-      updateExpense(name, amount, category, savingsGoalId);
+      updateExpense(name, amount, category, savingsGoalId, newPriorityId);
     }
     setShowExpenseModal(false);
   };
@@ -830,6 +864,8 @@ export const BudgetApp = ({
           onSave={handleExpenseModalSave}
           mode={expenseModalMode}
           priorityName={selectedPriority.name}
+          priorityId={selectedPriority.id}
+          priorities={priorities.map(p => ({ id: p.id, name: p.name }))}
           initialData={
             expenseModalMode === 'edit' && editingExpenseId
               ? selectedPriority.expenses.find(e => e.id === editingExpenseId)

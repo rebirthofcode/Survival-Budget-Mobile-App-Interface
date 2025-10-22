@@ -2,12 +2,19 @@ import React, { useEffect, useState, useRef } from 'react';
 import { XIcon, DollarSignIcon, AlertCircleIcon, CheckCircleIcon } from 'lucide-react';
 import { EXPENSE_CATEGORIES, type ExpenseCategory } from '../../constants';
 
+type Priority = {
+  id: number;
+  name: string;
+};
+
 type ExpenseModalProps = {
   isOpen: boolean;
   onClose: () => void;
-  onSave: (name: string, amount: number, category?: ExpenseCategory, savingsGoalId?: string) => void;
+  onSave: (name: string, amount: number, category?: ExpenseCategory, savingsGoalId?: string, newPriorityId?: number) => void;
   mode: 'add' | 'edit';
   priorityName: string;
+  priorityId: number;
+  priorities?: Priority[];
   initialData?: {
     name: string;
     amount: number;
@@ -22,12 +29,15 @@ export const ExpenseModal = ({
   onSave,
   mode,
   priorityName,
+  priorityId,
+  priorities = [],
   initialData
 }: ExpenseModalProps) => {
   const [name, setName] = useState(initialData?.name || '');
   const [amount, setAmount] = useState(initialData?.amount.toString() || '');
   const [category, setCategory] = useState<ExpenseCategory | undefined>(initialData?.category);
   const [savingsGoalId, setSavingsGoalId] = useState<string | undefined>(initialData?.savingsGoalId);
+  const [selectedPriorityId, setSelectedPriorityId] = useState<number>(priorityId);
   const [savingsGoals, setSavingsGoals] = useState<Array<{ id: string; name: string; targetAmount: number; currentAmount: number }>>([]);
   const [nameError, setNameError] = useState('');
   const [amountError, setAmountError] = useState('');
@@ -60,11 +70,12 @@ export const ExpenseModal = ({
       setAmount(initialData?.amount.toString() || '');
       setCategory(initialData?.category);
       setSavingsGoalId(initialData?.savingsGoalId);
+      setSelectedPriorityId(priorityId);
       setNameError('');
       setAmountError('');
       setTouched({ name: false, amount: false });
     }
-  }, [isOpen, initialData, mode]);
+  }, [isOpen, initialData, mode, priorityId]);
 
   // Prevent body scrolling when modal is open
   useEffect(() => {
@@ -199,7 +210,9 @@ export const ExpenseModal = ({
 
     // If validation passes, save
     if (!nameValidationError && !amountValidationError) {
-      onSave(name.trim(), parseInt(amount), category, category === 'savings' ? savingsGoalId : undefined);
+      // Pass the new priority ID only if it changed (for edit mode)
+      const newPriorityId = mode === 'edit' && selectedPriorityId !== priorityId ? selectedPriorityId : undefined;
+      onSave(name.trim(), parseInt(amount), category, category === 'savings' ? savingsGoalId : undefined, newPriorityId);
       handleClose();
     }
   };
@@ -291,6 +304,33 @@ export const ExpenseModal = ({
                 </p>
               )}
             </div>
+
+            {/* Priority Selection - Only shown in edit mode */}
+            {mode === 'edit' && priorities.length > 0 && (
+              <div>
+                <label htmlFor="expense-priority" className="block text-sm font-medium text-gray-700 mb-2">
+                  Move to Priority
+                </label>
+                <select
+                  id="expense-priority"
+                  value={selectedPriorityId}
+                  onChange={(e) => setSelectedPriorityId(Number(e.target.value))}
+                  className="block w-full px-4 py-3 text-base border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent bg-white"
+                >
+                  {priorities.map((priority) => (
+                    <option key={priority.id} value={priority.id}>
+                      {priority.name}
+                    </option>
+                  ))}
+                </select>
+                {selectedPriorityId !== priorityId && (
+                  <div className="mt-2 flex items-start text-sm text-orange-600">
+                    <AlertCircleIcon className="h-4 w-4 mr-1 flex-shrink-0 mt-0.5" />
+                    <span>This expense will be moved to {priorities.find(p => p.id === selectedPriorityId)?.name}</span>
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Amount */}
             <div>
