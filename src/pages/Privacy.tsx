@@ -2,6 +2,22 @@ export const Privacy = () => {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4">
       <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-sm p-8">
+        {/* Logo and Branding */}
+        <div className="text-center mb-8">
+          <div className="flex justify-center mb-3">
+            <svg width="48" height="48" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+              <rect x="2" y="2" width="36" height="36" rx="8" fill="white" stroke="#FF6B35" strokeWidth="2" />
+              <text x="20" y="16" fontFamily="Arial, sans-serif" fontSize="12" fill="#FF6B35" fontWeight="700" textAnchor="middle">
+                $
+              </text>
+              <rect x="14" y="22" width="12" height="2" rx="1" fill="#FF6B35" />
+              <rect x="12" y="26" width="16" height="2" rx="1" fill="#FF6B35" />
+              <rect x="10" y="30" width="20" height="2" rx="1" fill="#FF6B35" />
+            </svg>
+          </div>
+          <h2 className="text-xl font-bold text-gray-900">Survival Budget</h2>
+        </div>
+
         <h1 className="text-3xl font-bold text-gray-900 mb-6">
           Privacy
         </h1>
