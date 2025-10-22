@@ -7,7 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [1.0.0-beta] - 2025-01-22
+## [1.0.0-beta.2] - 2025-10-22
+
+### Session: Beta Feedback Implementation
 
 ### Added - Privacy & Transparency
 - **Privacy Statement Page** (`/privacy`)
@@ -113,6 +115,96 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 2. Is the expense moving feature discoverable?
 3. Does the value prop messaging attract the right users?
 4. Are "Coming Soon" badges effective or frustrating?
+
+---
+
+## [1.0.0-beta.1] - 2025-10-19 to 2025-10-20
+
+### Session: Beta Deployment & Polish
+
+### Added - Beta Access System
+- **Beta Access Gate** (BetaAccessGate component)
+  - Name and email capture form with validation
+  - Formspree integration (endpoint: xanpkalq)
+  - Email notifications: "New Beta Tester: [Name]"
+  - Custom Survival Budget logo (replaced generic shield icon)
+  - Graceful degradation: user gets access even if Formspree fails
+  - Stores user info in localStorage (betaAccessGranted, betaUserInfo)
+  - "Built by Articulate Digital" branding with link
+  - Contact email: hello@articulatedigital.co
+
+### Added - Income Management
+- **Edit Income Button**
+  - Pencil icon next to "Monthly Income" in budget summary
+  - Opens bottom sheet modal for editing
+  - Prevents accidental income changes
+  - Desktop-friendly controls for expense management
+
+### Added - Categories Screen
+- **ExpenseCategories Component**
+  - Visual display of expense categories
+  - Integrated into navigation flow
+  - Helps users understand priority system
+
+### Fixed - Critical Build Issues
+- **HapticFeedback Export Error**
+  - Fixed missing useHapticFeedback export
+  - Resolved TypeScript compilation errors
+- **Navigation System**
+  - Fixed screen transitions
+  - Improved routing logic
+- **Test Suite**
+  - All 59 tests passing (was 57/59)
+  - Updated failing tests for new components
+  - 100% test coverage maintained
+
+### Fixed - Onboarding Data Flow
+- **Data Persistence Bug**
+  - Prioritize fresh onboarding data over stale localStorage
+  - Pass rent, groceries, utilities from onboarding to BudgetApp
+  - Fix completion messaging accuracy
+  - Prevent data loss when completing onboarding
+
+### Fixed - UI Polish
+- **Beta Gate Design**
+  - Removed drop shadow for seamless look
+  - Removed border from card
+  - Cleaner, more professional appearance
+
+### Changed - Configuration
+- **Session Timeout**: Extended from 5 minutes to 24 hours
+  - Better UX for beta testers
+  - Reduces re-onboarding friction
+- **Income Validation**
+  - Added max limits and warning messages
+  - Prevents unrealistic income values
+- **Over-Budget Messaging**
+  - Removed duplicate warning messages
+  - Cleaner budget summary display
+
+### Technical Improvements
+- **Linting**: Fixed all 8 linting errors
+- **Bundle Size**: 242.69 KB (69.17 KB gzipped)
+- **Deployment Configs**: Added Netlify and Vercel configurations
+- **Line Endings**: Added .gitattributes for normalization
+- **Documentation**: Comprehensive deployment guide created
+
+---
+
+## [1.0.0-beta] - 2025-10-15
+
+### Session: Mobile UI Cleanup & Structure
+
+### Changed - Mobile Interface
+- Cleaned up Survival Budget mobile UI
+- Improved component structure
+- Removed old/unused screens
+- File cleanup and organization
+
+### Infrastructure
+- Updated .gitignore
+- Cleanup of legacy files
+- Merge from prod-pin branch
 
 ---
 
