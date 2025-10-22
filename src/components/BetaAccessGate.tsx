@@ -136,8 +136,8 @@ export const BetaAccessGate = ({ onGrantAccess }: BetaAccessGateProps) => {
           <h1 className="text-3xl font-bold text-gray-900 mb-1">
             Survival Budget
           </h1>
-          <p className="text-sm text-gray-600 mb-3">
-            Priority-based budgeting
+          <p className="text-lg text-gray-700 mb-3">
+            Budget without the tracking burnout
           </p>
           <p className="text-sm text-orange-600 font-medium uppercase tracking-wide">
             Beta Access
@@ -151,8 +151,7 @@ export const BetaAccessGate = ({ onGrantAccess }: BetaAccessGateProps) => {
               Welcome, Beta Tester!
             </h2>
             <p className="text-gray-600 text-sm">
-              Thank you for testing our priority-based budgeting app.
-              Please provide your details to continue.
+              Help us test a simpler way to budget. Enter your details to get started.
             </p>
           </div>
 
@@ -221,17 +220,30 @@ export const BetaAccessGate = ({ onGrantAccess }: BetaAccessGateProps) => {
             </button>
           </form>
 
-          {/* Privacy Notice */}
+          {/* Benefits */}
           <div className="mt-6 pt-6 border-t border-gray-200">
-            <p className="text-xs text-gray-500 text-center">
-              Your information is stored locally and used only for beta testing purposes.
-              We respect your privacy.
-            </p>
+            <div className="space-y-2">
+              <div className="flex items-start text-sm text-gray-600">
+                <span className="text-green-600 mr-2">✓</span>
+                <span>No endless expense tracking</span>
+              </div>
+              <div className="flex items-start text-sm text-gray-600">
+                <span className="text-green-600 mr-2">✓</span>
+                <span>See what's affordable at a glance</span>
+              </div>
+              <div className="flex items-start text-sm text-gray-600">
+                <span className="text-green-600 mr-2">✓</span>
+                <span>Your data stays on your device</span>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Footer */}
         <div className="text-center mt-6">
+          <p className="text-sm font-medium text-gray-700 mb-4">
+            Stop tracking. Start prioritizing.
+          </p>
           <p className="text-sm text-gray-600">
             Questions? Contact us at{' '}
             <a href="mailto:hello@articulatedigital.co?subject=Survival%20Budget%20Beta%20Feedback" className="text-orange-600 hover:text-orange-700 font-medium">
