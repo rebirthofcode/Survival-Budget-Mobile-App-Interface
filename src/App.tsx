@@ -10,6 +10,7 @@ import { OfflineIndicator } from './components/Mobile/OfflineIndicator';
 import { HapticFeedback, useHapticFeedback } from './components/Mobile/HapticFeedback';
 import { ExpenseCategories } from './components/ExpenseCategories';
 import { BetaAccessGate, hasBetaAccess } from './components/BetaAccessGate';
+import { Privacy } from './pages/Privacy';
 
 type BudgetData = {
   income: number;
@@ -385,6 +386,11 @@ const AppContent = () => {
 };
 
 export function App() {
+  // Check if we're on the privacy page
+  if (window.location.pathname === '/privacy') {
+    return <Privacy />;
+  }
+
   const [hasAccess, setHasAccess] = useState(false);
   const [isCheckingAccess, setIsCheckingAccess] = useState(true);
 

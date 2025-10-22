@@ -703,6 +703,15 @@ export const BudgetApp = ({
 
       <SpendingPlan priorityCount={getAffordablePriorityCount()} />
 
+      {/* Privacy footer */}
+      <div className="text-center py-6 text-xs text-gray-500 mt-8">
+        Your data stays on your device. We don't store anything on servers.
+        {' '}
+        <a href="/privacy" className="text-orange-600 hover:text-orange-700 font-medium">
+          Learn more about privacy
+        </a>
+      </div>
+
       {/* Bottom sheet for full expense management */}
       {showExpenseSheet && selectedPriority && (
         <BottomSheet
