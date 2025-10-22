@@ -1,4 +1,4 @@
-import { XIcon, HistoryIcon, SettingsIcon, HelpCircleIcon, InfoIcon, MenuIcon } from 'lucide-react';
+import { XIcon, HistoryIcon, SettingsIcon, HelpCircleIcon, InfoIcon, MenuIcon, ShieldIcon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 type NavigationMenuProps = {
@@ -128,6 +128,19 @@ export const NavigationMenu = ({ onNavigate }: NavigationMenuProps) => {
                     <p className="text-xs text-gray-500">Learn how to use the app</p>
                   </div>
                 </button>
+              </li>
+
+              <li>
+                <a
+                  href="/privacy"
+                  className="w-full flex items-center p-3 text-left hover:bg-gray-50 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500"
+                >
+                  <ShieldIcon className="h-5 w-5 text-orange-600 mr-3" />
+                  <div>
+                    <p className="font-medium text-gray-900">Privacy</p>
+                    <p className="text-xs text-gray-500">How we handle your data</p>
+                  </div>
+                </a>
               </li>
 
               <li>

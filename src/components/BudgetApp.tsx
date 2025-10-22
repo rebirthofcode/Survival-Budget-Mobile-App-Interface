@@ -561,25 +561,6 @@ export const BudgetApp = ({
 
   return (
     <div className="w-full max-w-md mx-auto px-4 py-6 flex flex-col gap-4">
-      {/* Header with branding and navigation */}
-      <div className="flex items-center justify-between pb-2">
-        <div className="flex items-center gap-2">
-          <svg width="32" height="32" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="2" width="36" height="36" rx="8" fill="white" stroke="#FF6B35" strokeWidth="2" />
-            <text x="20" y="16" fontFamily="Arial, sans-serif" fontSize="12" fill="#FF6B35" fontWeight="700" textAnchor="middle">
-              $
-            </text>
-            <rect x="14" y="22" width="12" height="2" rx="1" fill="#FF6B35" />
-            <rect x="12" y="26" width="16" height="2" rx="1" fill="#FF6B35" />
-            <rect x="10" y="30" width="20" height="2" rx="1" fill="#FF6B35" />
-          </svg>
-          <h1 className="text-lg font-bold text-gray-900">Survival Budget</h1>
-        </div>
-        <a href="/privacy" className="text-sm text-orange-600 hover:text-orange-700 font-medium">
-          Privacy
-        </a>
-      </div>
-
       <IncomeInput income={income} setIncome={setIncome} />
 
       {/* Budget Summary Card */}
