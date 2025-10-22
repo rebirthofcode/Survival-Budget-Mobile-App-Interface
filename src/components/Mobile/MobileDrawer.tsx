@@ -135,7 +135,7 @@ export const MobileDrawer = ({
 
         {/* Navigation */}
         <div className="py-2">
-          <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <div className="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">
             Main Navigation
           </div>
           <button 
@@ -161,59 +161,59 @@ export const MobileDrawer = ({
           </button>
           <button
             disabled
-            className="w-full flex items-center justify-between px-4 py-3 text-gray-400 cursor-not-allowed"
+            className="w-full flex items-center justify-between px-4 py-3 text-gray-500 cursor-not-allowed"
           >
             <div className="flex items-center">
-              <CalendarIcon className="h-5 w-5 mr-3 text-gray-400" />
+              <CalendarIcon className="h-5 w-5 mr-3 text-gray-500" />
               <span>Budget History</span>
             </div>
-            <span className="text-xs px-2 py-1 bg-gray-100 text-gray-500 rounded">Coming Soon</span>
+            <span className="text-xs px-2 py-1 bg-gray-200 text-gray-700 font-medium rounded">Coming Soon</span>
           </button>
           <button
             disabled
-            className="w-full flex items-center justify-between px-4 py-3 text-gray-400 cursor-not-allowed"
+            className="w-full flex items-center justify-between px-4 py-3 text-gray-500 cursor-not-allowed"
           >
             <div className="flex items-center">
-              <PiggyBankIcon className="h-5 w-5 mr-3 text-gray-400" />
+              <PiggyBankIcon className="h-5 w-5 mr-3 text-gray-500" />
               <span>Savings</span>
             </div>
-            <span className="text-xs px-2 py-1 bg-gray-100 text-gray-500 rounded">Coming Soon</span>
+            <span className="text-xs px-2 py-1 bg-gray-200 text-gray-700 font-medium rounded">Coming Soon</span>
           </button>
           <button
             disabled
-            className="w-full flex items-center justify-between px-4 py-3 text-gray-400 cursor-not-allowed"
+            className="w-full flex items-center justify-between px-4 py-3 text-gray-500 cursor-not-allowed"
           >
             <div className="flex items-center">
-              <UserIcon className="h-5 w-5 mr-3 text-gray-400" />
+              <UserIcon className="h-5 w-5 mr-3 text-gray-500" />
               <span>Profile</span>
             </div>
-            <span className="text-xs px-2 py-1 bg-gray-100 text-gray-500 rounded">Coming Soon</span>
+            <span className="text-xs px-2 py-1 bg-gray-200 text-gray-700 font-medium rounded">Coming Soon</span>
           </button>
         </div>
 
         <div className="border-t border-gray-200 py-2">
-          <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <div className="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">
             More
           </div>
           <button
             disabled
-            className="w-full flex items-center justify-between px-4 py-3 text-gray-400 cursor-not-allowed"
+            className="w-full flex items-center justify-between px-4 py-3 text-gray-500 cursor-not-allowed"
           >
             <div className="flex items-center">
-              <SettingsIcon className="h-5 w-5 mr-3 text-gray-400" />
+              <SettingsIcon className="h-5 w-5 mr-3 text-gray-500" />
               <span>Settings</span>
             </div>
-            <span className="text-xs px-2 py-1 bg-gray-100 text-gray-500 rounded">Coming Soon</span>
+            <span className="text-xs px-2 py-1 bg-gray-200 text-gray-700 font-medium rounded">Coming Soon</span>
           </button>
           <button
             disabled
-            className="w-full flex items-center justify-between px-4 py-3 text-gray-400 cursor-not-allowed"
+            className="w-full flex items-center justify-between px-4 py-3 text-gray-500 cursor-not-allowed"
           >
             <div className="flex items-center">
-              <HelpCircleIcon className="h-5 w-5 mr-3 text-gray-400" />
+              <HelpCircleIcon className="h-5 w-5 mr-3 text-gray-500" />
               <span>Help & Support</span>
             </div>
-            <span className="text-xs px-2 py-1 bg-gray-100 text-gray-500 rounded">Coming Soon</span>
+            <span className="text-xs px-2 py-1 bg-gray-200 text-gray-700 font-medium rounded">Coming Soon</span>
           </button>
           <a
             href="/privacy"

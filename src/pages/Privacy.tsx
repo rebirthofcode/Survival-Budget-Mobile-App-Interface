@@ -15,16 +15,16 @@ export const Privacy = () => {
               <rect x="10" y="30" width="20" height="2" rx="1" fill="#FF6B35" />
             </svg>
           </div>
-          <h2 className="text-xl font-bold text-gray-900">Survival Budget</h2>
+          <h2 className="text-xl font-bold text-gray-800">Survival Budget</h2>
         </div>
 
-        <h1 className="text-3xl font-bold text-gray-900 mb-6">
+        <h1 className="text-3xl font-bold text-gray-800 mb-6">
           Privacy
         </h1>
 
-        <div className="space-y-6 text-gray-700">
+        <div className="space-y-6 text-gray-700 leading-relaxed">
           <section>
-            <h2 className="text-xl font-semibold text-gray-900 mb-3">
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">
               Your data stays on your device
             </h2>
             <p className="leading-relaxed">
@@ -33,7 +33,7 @@ export const Privacy = () => {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-gray-900 mb-3">
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">
               What we collect
             </h2>
             <p className="leading-relaxed">
@@ -45,7 +45,7 @@ export const Privacy = () => {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-gray-900 mb-3">
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">
               How to delete your data
             </h2>
             <p className="leading-relaxed">
@@ -57,7 +57,7 @@ export const Privacy = () => {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-gray-900 mb-3">
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">
               Third party services
             </h2>
             <p className="leading-relaxed">
@@ -69,7 +69,7 @@ export const Privacy = () => {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-gray-900 mb-3">
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">
               Questions
             </h2>
             <p className="leading-relaxed">
