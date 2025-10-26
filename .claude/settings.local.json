@@ -10,7 +10,8 @@
       "Bash(npm test:*)",
       "Bash(npm update:*)",
       "Bash(npm run dev)",
-      "Bash(node -e \"console.log(JSON.stringify(require(''fs'').readFileSync(''.git/config'', ''utf8'').includes(''Survival-Budget'') ? ''correct repo'' : ''wrong repo''))\")"
+      "Bash(node -e \"console.log(JSON.stringify(require(''fs'').readFileSync(''.git/config'', ''utf8'').includes(''Survival-Budget'') ? ''correct repo'' : ''wrong repo''))\")",
+      "Bash(git branch -D safe/2025-10-15)"
     ],
     "deny": [],
     "ask": []
