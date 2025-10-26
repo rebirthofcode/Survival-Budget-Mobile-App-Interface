@@ -1,5 +1,87 @@
+# ============================================================================
+# PROPRIETARY DESIGN & STRATEGY FILES
+# ============================================================================
+# Protects intellectual property, design process, and business strategy
+
+# Design Process Documentation
+.sessions/
+audits/
+AUDIT_REPORT.md
+SESSION_SUMMARY.md
+TEST_PLAN.md
+CLEANUP_PLAN.md
+BETA_RELEASE_SUMMARY.md
+
+# Internal Guidelines & Checklists
+*-checklist.md
+*-guidelines.md
+*-review.md
+*-criteria.md
+INTERNAL*.md
+PRIVATE*.md
+
+# Strategy & Planning Documents
+*-strategy.md
+*-roadmap.md
+*-proposal.md
+PRD*.md
+BRIEF*.md
+
+# Inspiration & Reference Materials
+inspiration/
+references/
+moodboards/
+design-assets/
+*.sketch
+*.fig
+*.xd
+*.psd
+
+# Debug & Test Files
+screenshots/
+debug/
+test-data/
+*.screenshot.png
+*-debug.*
+*-test.*
+
+# Deployment & Infrastructure Scripts (keep configs public)
+*.bat
+DEPLOY_*.md
+EMERGENCY_*.md
+FORCE_PUSH_GUIDE.md
+FAVICON-GUIDE.md
+generate-favicons.*
+move-favicons-from-downloads.bat
+
+# ============================================================================
+# STANDARD EXCLUSIONS
+# ============================================================================
+
+# Dependencies
+node_modules/
+bower_components/
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+out/
+*.local
+
+# Environment & Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.key
+*.pem
+*.p12
+secrets/
+
 # Logs
-logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,23 +89,59 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Operating System Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
 
-# Editor directories and files
+# IDE & Editor Files
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
+!.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-.sessions/
-audits/
-AUDIT_REPORT.md
-SESSION_SUMMARY.md
-TEST_PLAN.md
+
+# Testing & Coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# Temporary Files
+tmp/
+temp/
+*.tmp
+*.bak
+*.cache
+
+# Package Manager
+package-lock.json.bak
+yarn.lock.bak
+
+# ============================================================================
+# KEEP PUBLIC (Explicitly NOT ignored)
+# ============================================================================
+# These files are intentionally tracked:
+# - README.md (project overview)
+# - CHANGELOG.md (version history)
+# - DEPLOYMENT.md (deployment guide)
+# - QUICK_START.md (getting started)
+# - Source code (src/, public/)
+# - Config files (package.json, tsconfig.json, etc.)
