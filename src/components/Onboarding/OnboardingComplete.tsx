@@ -21,11 +21,11 @@ export const OnboardingComplete = ({ onContinue }: OnboardingCompleteProps) => {
         </div>
 
         <h2 className="text-2xl font-bold text-gray-900 mb-3 text-center">
-          You're all set
+          Your essentials are set
         </h2>
         
         <p className="text-gray-600 mb-8 text-center">
-          Your budget is planned. Now you know exactly what you can afford at each priority level.
+          You've added your income, rent, groceries, and utilities — your core Survival Budget.
         </p>
 
         {/* What You Can Do */}
@@ -35,7 +35,7 @@ export const OnboardingComplete = ({ onContinue }: OnboardingCompleteProps) => {
               <BarChart3 className="h-5 w-5 text-orange-600" />
             </div>
             <div className="flex-1">
-              <h3 className="font-medium text-gray-900 mb-1">See what's affordable</h3>
+              <h3 className="font-medium text-gray-900 mb-1">See what's affordable next</h3>
               <p className="text-sm text-gray-600">Know exactly what fits your income at each priority level</p>
             </div>
           </div>
@@ -45,8 +45,8 @@ export const OnboardingComplete = ({ onContinue }: OnboardingCompleteProps) => {
               <Edit3 className="h-5 w-5 text-orange-600" />
             </div>
             <div className="flex-1">
-              <h3 className="font-medium text-gray-900 mb-1">Update your plan anytime</h3>
-              <p className="text-sm text-gray-600">Adjust expenses, add new ones, or change amounts as needed</p>
+              <h3 className="font-medium text-gray-900 mb-1">Edit anytime</h3>
+              <p className="text-sm text-gray-600">You can always update your numbers as things change.</p>
             </div>
           </div>
 
@@ -55,7 +55,7 @@ export const OnboardingComplete = ({ onContinue }: OnboardingCompleteProps) => {
               <PiggyBank className="h-5 w-5 text-orange-600" />
             </div>
             <div className="flex-1">
-              <h3 className="font-medium text-gray-900 mb-1">Plan for savings</h3>
+              <h3 className="font-medium text-gray-900 mb-1">Build toward savings</h3>
               <p className="text-sm text-gray-600">See how much you can allocate to Future Building after essentials</p>
             </div>
           </div>
