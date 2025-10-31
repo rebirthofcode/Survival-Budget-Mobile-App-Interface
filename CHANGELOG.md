@@ -7,6 +7,62 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.0-beta.3] - 2025-10-28 to 2025-10-31
+
+### Session: Beta Feedback Collection & Bug Fixes
+
+### Fixed - Critical Data Loss Bug
+- **Data Persistence Issue** (Reported by beta tester)
+  - Users were losing all expenses except Survival items when returning to app
+  - Root cause: Onboarding data was prioritized over saved localStorage data
+  - Fix: Reversed priority order to check localStorage first, then onboarding data
+  - Impact: All returning users now retain their data across sessions
+  - Discovered via first beta feedback response
+
+### Changed - Onboarding Messaging
+- **OnboardingComplete Component** - Updated copy for accuracy
+  - "Your essentials are set" (was: unclear what was accomplished)
+  - "You've added your income, rent, groceries, and utilities — your core Survival Budget"
+  - Clearer expectations about what comes next
+  - More specific about what can be edited
+  - Better framing of savings as "Future Building"
+
+### Added - Beta Feedback System
+- **Google Form Survey** (11 questions, 3-5 minutes)
+  - User context validation (budgeting habits, interest drivers)
+  - Core experience metrics (affordability clarity, priority system)
+  - Feature prioritization (History, Savings, Reminders, Templates)
+  - Messaging validation ("tracking burnout" resonance)
+  - Open feedback collection
+- **Email Templates** for beta tester outreach
+- **LinkedIn Follow-up Strategy** for Wave 2 recruitment
+
+### Changed - Accessibility Improvements
+- **Contrast Ratios** (WCAG 2.1 compliant)
+  - Coming Soon badges: text-gray-700 on bg-gray-200 (4.5:1+)
+  - Disabled nav items: text-gray-500 (improved visibility)
+  - Section headers: text-gray-600 (better readability)
+- **Softer Black Text**
+  - Changed all text-gray-900 → text-gray-800
+  - Reduced eye strain, more professional appearance
+- **Typography**
+  - Added leading-relaxed to Privacy page body text
+  - Ensures 1.5+ line height for better readability
+
+### Changed - Beta Gate Refinements
+- "Contact us" → "Reach us" (more conversational)
+- Consistent text-gray-800 for all headings
+
+### Security - Intellectual Property Protection
+- **Comprehensive .gitignore** updates
+  - Protected design process documentation (.sessions/, audits/)
+  - Protected deployment scripts (*.bat files)
+  - Protected strategy documents (PRD, BRIEF, roadmap files)
+  - Protected inspiration/reference materials
+  - Kept source code and public documentation visible
+
+---
+
 ## [1.0.0-beta.2] - 2025-10-22
 
 ### Session: Beta Feedback Implementation
