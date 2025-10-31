@@ -11,6 +11,7 @@ SESSION_SUMMARY.md
 TEST_PLAN.md
 CLEANUP_PLAN.md
 BETA_RELEASE_SUMMARY.md
+CHANGELOG.md
 
 # Internal Guidelines & Checklists
 *-checklist.md
@@ -140,7 +141,6 @@ yarn.lock.bak
 # ============================================================================
 # These files are intentionally tracked:
 # - README.md (project overview)
-# - CHANGELOG.md (version history)
 # - DEPLOYMENT.md (deployment guide)
 # - QUICK_START.md (getting started)
 # - Source code (src/, public/)
