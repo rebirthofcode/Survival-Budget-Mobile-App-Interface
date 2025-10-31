@@ -727,7 +727,7 @@ export const BudgetApp = ({
                         ? 'bg-green-50 border-green-200'
                         : getPriorityBudgetStatus(priority.id) === 'tight'
                         ? 'bg-yellow-50 border-yellow-200'
-                        : 'bg-red-50 border-red-200'
+                        : 'bg-orange-50 border-orange-200'
                     }`}>
                       <div className="space-y-2">
                         {/* Remaining budget BEFORE this priority */}
@@ -756,12 +756,12 @@ export const BudgetApp = ({
                             return (
                               <div className="flex items-center justify-between">
                                 <span className={`text-sm font-semibold ${
-                                  isOver ? 'text-red-700' : 'text-green-700'
+                                  isOver ? 'text-orange-700' : 'text-green-700'
                                 }`}>
                                   {isOver ? 'Over budget' : 'You can afford'}
                                 </span>
                                 <span className={`text-lg font-bold ${
-                                  isOver ? 'text-red-800' : 'text-green-800'
+                                  isOver ? 'text-orange-800' : 'text-green-800'
                                 }`}>
                                   ${Math.abs(remaining).toLocaleString()} {isOver ? 'over' : 'more'}
                                 </span>
