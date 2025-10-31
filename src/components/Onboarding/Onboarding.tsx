@@ -85,6 +85,10 @@ export const Onboarding = ({
         return (
           <OnboardingComplete
             onContinue={() => completeOnboarding({ income, rent, groceries, utilities })}
+            income={income}
+            rent={rent}
+            groceries={groceries}
+            utilities={utilities}
           />
         );
       default:
