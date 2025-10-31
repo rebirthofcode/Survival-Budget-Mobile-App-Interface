@@ -608,7 +608,7 @@ export const BudgetApp = ({
                     setTempIncome(income);
                     setShowEditIncomeModal(true);
                   }}
-                  className="p-1 hover:bg-orange-400 rounded transition-colors"
+                  className="p-1 hover:bg-orange-400 rounded transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-orange-500"
                   aria-label="Edit income"
                 >
                   <Pencil className="h-3.5 w-3.5" />
@@ -686,7 +686,9 @@ export const BudgetApp = ({
               {/* Card Header */}
               <button
                 onClick={() => togglePriority(priority.id)}
-                className="w-full p-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
+                className="w-full p-4 flex items-center justify-between hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-inset"
+                aria-expanded={isExpanded}
+                aria-controls={`priority-${priority.id}-content`}
               >
                 <div className="flex items-center">
                   <div className={`${getIconBackground(priority.id)} rounded-full p-2 mr-3`}>
@@ -719,7 +721,10 @@ export const BudgetApp = ({
 
               {/* Expanded Content */}
               {isExpanded && (
-                <div className="border-t border-gray-200 p-4">
+                <div
+                  id={`priority-${priority.id}-content`}
+                  className="border-t border-gray-200 p-4"
+                >
                   {/* Budget Status Card - Show if there are expenses AND income > 0 */}
                   {priority.expenses.length > 0 && income > 0 && (
                     <div className={`mb-4 p-3 rounded-lg border-2 ${
@@ -785,7 +790,7 @@ export const BudgetApp = ({
                           e.stopPropagation();
                           openAddExpenseModal(priority.id);
                         }}
-                        className="w-full py-2 px-4 bg-orange-600 text-white rounded-md text-sm font-medium hover:bg-orange-700 shadow-sm"
+                        className="w-full py-2 px-4 bg-orange-600 text-white rounded-md text-sm font-medium hover:bg-orange-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
                       >
                         Set What You Can Afford
                       </button>
@@ -810,7 +815,7 @@ export const BudgetApp = ({
                           e.stopPropagation();
                           openExpenseSheet(priority.id);
                         }}
-                        className="w-full py-2 px-4 border border-orange-600 text-orange-600 rounded-md text-sm font-medium hover:bg-orange-50"
+                        className="w-full py-2 px-4 border border-orange-600 text-orange-600 rounded-md text-sm font-medium hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
                       >
                         Adjust What You Can Afford
                       </button>
@@ -829,7 +834,10 @@ export const BudgetApp = ({
       <div className="text-center py-6 text-xs text-gray-500 mt-8">
         Your data stays on your device. We don't store anything on servers.
         {' '}
-        <a href="/privacy" className="text-orange-600 hover:text-orange-700 font-medium">
+        <a
+          href="/privacy"
+          className="text-orange-600 hover:text-orange-700 font-medium focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 rounded"
+        >
           Learn more about privacy
         </a>
       </div>

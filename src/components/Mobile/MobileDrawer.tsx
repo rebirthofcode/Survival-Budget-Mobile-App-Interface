@@ -138,23 +138,23 @@ export const MobileDrawer = ({
           <div className="px-4 py-2 text-xs font-semibold text-gray-600 uppercase tracking-wider">
             Main Navigation
           </div>
-          <button 
+          <button
             onClick={() => handleNavigate('home')}
-            className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100"
+            className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:ring-2 focus:ring-inset focus:ring-orange-500"
           >
             <HomeIcon className="h-5 w-5 mr-3 text-gray-500" />
             <span>Home</span>
           </button>
           <button
             onClick={() => handleNavigate('budget')}
-            className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100"
+            className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:ring-2 focus:ring-inset focus:ring-orange-500"
           >
             <BarChart3Icon className="h-5 w-5 mr-3 text-gray-500" />
             <span>Budget</span>
           </button>
           <button
             onClick={() => handleNavigate('categories')}
-            className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100"
+            className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:ring-2 focus:ring-inset focus:ring-orange-500"
           >
             <TagIcon className="h-5 w-5 mr-3 text-gray-500" />
             <span>Categories</span>
@@ -217,7 +217,7 @@ export const MobileDrawer = ({
           </button>
           <a
             href="/privacy"
-            className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100"
+            className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:ring-2 focus:ring-inset focus:ring-orange-500"
           >
             <ShieldIcon className="h-5 w-5 mr-3 text-gray-500" />
             <span>Privacy</span>
@@ -228,7 +228,7 @@ export const MobileDrawer = ({
         <div className="border-t border-gray-200 p-4 mt-auto">
           <button
             onClick={onLogout}
-            className="w-full flex items-center px-4 py-3 text-orange-600 hover:bg-orange-50 rounded-md"
+            className="w-full flex items-center px-4 py-3 text-orange-600 hover:bg-orange-50 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
           >
             <RotateCcwIcon className="h-5 w-5 mr-3" />
             <span>Reset App</span>
