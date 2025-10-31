@@ -378,7 +378,7 @@ export const ExpenseModal = ({
                 </div>
               ) : (
                 <p className="mt-2 text-sm text-gray-500">
-                  Enter the monthly cost for this expense
+                  Set what you can afford for this each month
                 </p>
               )}
             </div>
@@ -464,8 +464,8 @@ export const ExpenseModal = ({
                 <div className="ml-3">
                   <p className="text-sm text-blue-700">
                     {mode === 'add'
-                      ? 'This expense will be added to your budget and affect your affordability calculations.'
-                      : 'Changes to this expense will update your budget immediately.'}
+                      ? 'Set what you want to afford for this — no need to track past spending.'
+                      : 'Adjust what you can afford — your budget updates instantly.'}
                   </p>
                 </div>
               </div>

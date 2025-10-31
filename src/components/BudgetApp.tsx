@@ -778,7 +778,7 @@ export const BudgetApp = ({
                     <div className="text-center py-6">
                       <PlusCircleIcon className="h-12 w-12 text-gray-300 mx-auto mb-3" />
                       <p className="text-gray-500 text-sm italic mb-4">
-                        No expenses yet. Tap the button below to add one.
+                        Set what you want to afford at this priority level.
                       </p>
                       <button
                         onClick={(e) => {
@@ -787,7 +787,7 @@ export const BudgetApp = ({
                         }}
                         className="w-full py-2 px-4 bg-orange-600 text-white rounded-md text-sm font-medium hover:bg-orange-700 shadow-sm"
                       >
-                        Add First Expense
+                        Set What You Can Afford
                       </button>
                     </div>
                   ) : (
@@ -812,7 +812,7 @@ export const BudgetApp = ({
                         }}
                         className="w-full py-2 px-4 border border-orange-600 text-orange-600 rounded-md text-sm font-medium hover:bg-orange-50"
                       >
-                        Manage Expenses
+                        Adjust What You Can Afford
                       </button>
                     </>
                   )}
