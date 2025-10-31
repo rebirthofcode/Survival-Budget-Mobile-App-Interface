@@ -559,6 +559,39 @@ export const BudgetApp = ({
   // Calculate remaining budget
   const remainingBudget = income - totalExpenses;
 
+  // Calculate remaining budget at each priority level (waterfall)
+  const getRemainingBudgetAtPriority = (priorityId: number): number => {
+    let remaining = income;
+    for (let i = 0; i < priorities.length; i++) {
+      if (priorities[i].id === priorityId) {
+        // This is the priority we're calculating for - return what's left BEFORE spending here
+        return remaining;
+      }
+      // Subtract this priority's active expenses from remaining budget
+      const priorityTotal = priorities[i].expenses
+        .filter(e => e.enabled)
+        .reduce((sum, e) => sum + e.amount, 0);
+      remaining -= priorityTotal;
+    }
+    return remaining;
+  };
+
+  // Get budget status for a priority (for visual indicators)
+  const getPriorityBudgetStatus = (priorityId: number): 'healthy' | 'tight' | 'over' => {
+    const priority = priorities.find(p => p.id === priorityId);
+    if (!priority) return 'healthy';
+
+    const remainingAtPriority = getRemainingBudgetAtPriority(priorityId);
+    const priorityTotal = priority.expenses
+      .filter(e => e.enabled)
+      .reduce((sum, e) => sum + e.amount, 0);
+    const afterThisPriority = remainingAtPriority - priorityTotal;
+
+    if (afterThisPriority < 0) return 'over';
+    if (afterThisPriority < remainingAtPriority * 0.2) return 'tight'; // Less than 20% left
+    return 'healthy';
+  };
+
   return (
     <div className="w-full max-w-md mx-auto px-4 py-6 flex flex-col gap-4">
       <IncomeInput income={income} setIncome={setIncome} />
@@ -675,8 +708,10 @@ export const BudgetApp = ({
                 </div>
                 <div className="flex items-center">
                   <div className="text-right mr-3">
-                    <p className="font-medium text-gray-900">${totalAmount.toLocaleString()}</p>
-                    <p className="text-xs text-gray-500">total</p>
+                    <p className="text-lg font-bold text-gray-900">${totalAmount.toLocaleString()}</p>
+                    <p className="text-xs text-gray-600 font-medium">
+                      {priority.expenses.filter(e => e.enabled).length} active
+                    </p>
                   </div>
                   {isExpanded ? <ChevronUpIcon className="h-5 w-5 text-gray-400" /> : <ChevronDownIcon className="h-5 w-5 text-gray-400" />}
                 </div>
@@ -685,6 +720,59 @@ export const BudgetApp = ({
               {/* Expanded Content */}
               {isExpanded && (
                 <div className="border-t border-gray-200 p-4">
+                  {/* Budget Status Card - Show if there are expenses AND income > 0 */}
+                  {priority.expenses.length > 0 && income > 0 && (
+                    <div className={`mb-4 p-3 rounded-lg border-2 ${
+                      getPriorityBudgetStatus(priority.id) === 'healthy'
+                        ? 'bg-green-50 border-green-200'
+                        : getPriorityBudgetStatus(priority.id) === 'tight'
+                        ? 'bg-yellow-50 border-yellow-200'
+                        : 'bg-red-50 border-red-200'
+                    }`}>
+                      <div className="space-y-2">
+                        {/* Remaining budget BEFORE this priority */}
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-gray-700 font-medium">Available at this level</span>
+                          <span className="text-gray-900 font-bold">
+                            ${getRemainingBudgetAtPriority(priority.id).toLocaleString()}
+                          </span>
+                        </div>
+
+                        {/* Active expenses in this priority */}
+                        <div className="flex items-center justify-between text-sm">
+                          <span className="text-gray-600">Allocated here</span>
+                          <span className="text-gray-800 font-medium">
+                            −${totalAmount.toLocaleString()}
+                          </span>
+                        </div>
+
+                        {/* Divider */}
+                        <div className="border-t border-gray-300 pt-2">
+                          {(() => {
+                            const availableAtLevel = getRemainingBudgetAtPriority(priority.id);
+                            const remaining = availableAtLevel - totalAmount;
+                            const isOver = remaining < 0;
+
+                            return (
+                              <div className="flex items-center justify-between">
+                                <span className={`text-sm font-semibold ${
+                                  isOver ? 'text-red-700' : 'text-green-700'
+                                }`}>
+                                  {isOver ? 'Over budget' : 'You can afford'}
+                                </span>
+                                <span className={`text-lg font-bold ${
+                                  isOver ? 'text-red-800' : 'text-green-800'
+                                }`}>
+                                  ${Math.abs(remaining).toLocaleString()} {isOver ? 'over' : 'more'}
+                                </span>
+                              </div>
+                            );
+                          })()}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {priority.expenses.length === 0 ? (
                     /* Empty State */
                     <div className="text-center py-6">
