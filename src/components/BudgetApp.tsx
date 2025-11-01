@@ -593,7 +593,7 @@ export const BudgetApp = ({
 
       {/* Budget Summary Card */}
       {income > 0 && (
-        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-lg shadow-md p-4 text-white">
+        <div className="bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl shadow-lg shadow-orange-200/50 p-4 text-white transition-all duration-200">
           <div className="flex items-center justify-between mb-3">
             <div>
               <div className="flex items-center gap-2">
@@ -677,11 +677,11 @@ export const BudgetApp = ({
           const borderColor = priority.isAffordable ? 'border-green-500' : 'border-orange-500';
 
           return (
-            <div key={priority.id} className={`bg-white rounded-lg shadow-sm border-l-4 ${borderColor} overflow-hidden`}>
+            <div key={priority.id} className={`bg-white rounded-xl shadow-md shadow-gray-100 border-l-4 ${borderColor} overflow-hidden transition-all duration-200 hover:shadow-lg`}>
               {/* Card Header */}
               <button
                 onClick={() => togglePriority(priority.id)}
-                className="w-full p-4 flex items-center justify-between hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-inset"
+                className="w-full p-4 flex items-center justify-between hover:bg-gray-50 transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-inset"
                 aria-expanded={isExpanded}
                 aria-controls={`priority-${priority.id}-content`}
               >
@@ -722,7 +722,7 @@ export const BudgetApp = ({
                 >
                   {/* Budget Status Card - Show if there are expenses AND income > 0 */}
                   {priority.expenses.length > 0 && income > 0 && (
-                    <div className={`mb-4 p-3 rounded-lg border-2 ${
+                    <div className={`mb-4 p-3 rounded-xl border-2 ${
                       getPriorityBudgetStatus(priority.id) === 'healthy'
                         ? 'bg-green-50 border-green-200'
                         : getPriorityBudgetStatus(priority.id) === 'tight'
@@ -785,7 +785,7 @@ export const BudgetApp = ({
                           e.stopPropagation();
                           openAddExpenseModal(priority.id);
                         }}
-                        className="w-full py-2 px-4 bg-orange-600 text-white rounded-md text-sm font-medium hover:bg-orange-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+                        className="w-full py-2 px-4 bg-orange-600 text-white rounded-lg text-sm font-medium hover:bg-orange-700 shadow-md shadow-orange-200/50 hover:shadow-lg hover:shadow-orange-200/60 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-200 ease-out hover:scale-[1.02]"
                       >
                         Set What You Can Afford
                       </button>
@@ -810,7 +810,7 @@ export const BudgetApp = ({
                           e.stopPropagation();
                           openExpenseSheet(priority.id);
                         }}
-                        className="w-full py-2 px-4 border border-orange-600 text-orange-600 rounded-md text-sm font-medium hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+                        className="w-full py-2 px-4 border-2 border-orange-600 text-orange-600 rounded-lg text-sm font-medium hover:bg-orange-50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 transition-all duration-200 ease-out hover:scale-[1.02]"
                       >
                         Adjust What You Can Afford
                       </button>
