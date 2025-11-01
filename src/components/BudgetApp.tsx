@@ -149,26 +149,21 @@ export const BudgetApp = ({
     localStorage.setItem('budgetPriorities', JSON.stringify(priorities));
   }, [priorities]);
 
-  // Load saved income from localStorage
+  // Save income to budgetData in localStorage whenever it changes
+  // This keeps it in sync with App.tsx's budgetData state
   useEffect(() => {
-    const savedIncome = localStorage.getItem('budgetIncome');
-    if (savedIncome) {
+    const savedBudgetData = localStorage.getItem('budgetData');
+    if (savedBudgetData) {
       try {
-        const parsedIncome = parseInt(savedIncome);
-        if (!isNaN(parsedIncome)) {
-          setIncome(parsedIncome);
-        }
+        const budgetData = JSON.parse(savedBudgetData);
+        budgetData.income = income;
+        localStorage.setItem('budgetData', JSON.stringify(budgetData));
       } catch (error) {
         if (process.env.NODE_ENV === 'development') {
-          console.error('Error loading saved income:', error);
+          console.error('Error updating income in budgetData:', error);
         }
       }
     }
-  }, []);
-
-  // Save income to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem('budgetIncome', income.toString());
   }, [income]);
 
   // Create monthly budget snapshots for history tracking
